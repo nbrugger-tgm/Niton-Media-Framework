@@ -68,10 +68,12 @@ You can use this API great for :
  - Store Objects in Files
  - Encrypting Objects and Streams
  - Live Data transmission
- - Online Based Games
- - Chat Services
- - Custom Servers
- - Something like Samba (sharing files/dirs in local networks) 
+ - Store Objects in JSON
+ - Read and write JSON
+ - Custom Audio Decoders/Endcoders
+ - Play Audio
+ - Play Video (soon)
+ - Do things with files: easy moving and so on
 ## Examples
 Cryptography:
  - RSA or AES en/decrypt a byte array 
