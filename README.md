@@ -28,67 +28,8 @@ The `ByteParser` class provides many methods to convert everything to bytes usin
 At moment we only have one additional Stream called the CounterIn/Outputstream which simply counts all bytes which pass it. There will be many others soon.
 ### Utilitys
 The main classes are `RessurceLoader` which contains a lot of static methods and `SoundManager` also contais many static methods for playing music.
-All these methods are well documented and very easy to use, if you wish to have more controll about what happens use the API classes
-### Server Client Modell
-The Server Client modell is the most important part of the API. It consist of many and big classes.
-There are 3 Ways to use the given structure. The package is `com.niton.tele.network` and the
-most interesting classes there are `client.NetworkClient` and `server.Server`
-
- - Basic Use
-	 1. Basic uses only a minimal part of the API and **only use one Stream**/Socket. It is for sending data over an single Stream for only one time. Its not recommended as it doesn't supports encryption multithreading or data handling and connection seccurity
-	 2. Examples are at the end of the document 
- - Package Use
-	 1. Package Use allows you additional to the Basic use to pack the data to send in packages.
-	 2. Because of this you have the advantage that you are able to **easy send full Objects** and big data constructs, the disadvantage you have in comparison to the Basic Use is that you are not able to stream the content so its not recommended for Big downloads as long as you dont write your own PackageSplitter
-	 3. Encrypting also doesnt works here
- - Full stack
-	 1. Here you have a very very hight amount of good services automisations and other cool stuff.
-	 2. You can use this very easy as its very beautiful designed 
-	 3. Some cool features
-		 1. Automated Session Handling
-		 2. Automated (controllable) Encryption
-		 3. Automated Multitherading
-		 4. ping
-		 5. and much more
-	 4. Additional we can use the Streaming feature from the Simple Use
-## Where to use
-You can use this API great for :
- - Data providing Services
- - Making an API for your Web Service
- - Live Data transmission
- - Online Based Games
- - Chat Services
- - Custom Servers
- - Something like Samba (sharing files/dirs in local networks) 
-## Examples
-Cryptography:
- - RSA or AES en/decrypt a byte array 
-
-    `byte[] dataToEncrypt = "Some ****** very ****** bad text nobody is allowed to see".getBytes("UTF-8");
-    SecretKey key        = SimpleAES.generateKey(128);
-    byte[] encryptedData = SimpleAES.encrypt(key, dataToEncrypt);
-    //Some Time in between
-    byte[] decryptedData = SimpleAES.decrypt(key, encryptedData);`
-
- - Cluster en/decrypt a byte array 
-
-    `byte[] dataToEncrypt = "Some ****** very ****** bad text nobody is allowed to see".getBytes("UTF-8");
-    byte[] key           = SimpleAES.generateRandom(1024);
-    byte[] encryptedData = SimpleCluster.encrypt(key, dataToEncrypt);
-    //Some Time in between
-    byte[] decryptedData = SimpleCluster.decrypt(key, encryptedData);`
-    
-
- - Encrypt an `Serializeable` Object
-
-    `Rectangle secretRectangle = new Rectangle(123, 448, 625, 326);
-		SecretKey key = SimpleAES.generateKey(128);
-		SealedObject encrypted = SimpleAES.encryptObject(secretRectangle, key);
-		//You can do whatever you want here. I save it into an File
-		File f = new File("C:/myfile.obj.enc");
-		FileOutputStream fos = new FileOutputStream(f);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(encrypted);`
+All these methods are well documented and very easy to use, if you wish to have more controll about what happens use the API classes.
+You can do things like read/parse/write XML, read out of the JAR, read and scale Images
 ### Audio
 Here i use JavaZooms MP3 Parser but it is a completely new thing. It not only provides the ability to play MP3 players it has some functions to stop pause get the current time mark and much more. And a thing which is way important is that it is extensible. I have many interfaces which you can use to extend the API in an easy way. 
 The package obviously is `com.niton.media.audio` and if you simply play music (MP3) you only need the class SoundManager which also supports streaming for example over an network using my SaveNetwork API.
@@ -121,6 +62,47 @@ This is one of the parts i am the most proud of, because it seems to be the only
 Another very very cool feature is an VERY easy Serialisation where you can generate JSON out of Java Objects.
 For this purpose you can use `new JsonObject(instanceToSerialize)`
 
+## Where to use
+You can use this API great for :
+ - Reading and Writing Files
+ - Store Objects in Files
+ - Encrypting Objects and Streams
+ - Live Data transmission
+ - Store Objects in JSON
+ - Read and write JSON
+ - Custom Audio Decoders/Endcoders
+ - Play Audio
+ - Play Video (soon)
+ - Do things with files: easy moving and so on
+## Examples
+Cryptography:
+ - RSA or AES en/decrypt a byte array 
+
+    `byte[] dataToEncrypt = "Some ****** very ****** bad text nobody is allowed to see".getBytes("UTF-8");
+    SecretKey key        = SimpleAES.generateKey(128);
+    byte[] encryptedData = SimpleAES.encrypt(key, dataToEncrypt);
+    //Some Time in between
+    byte[] decryptedData = SimpleAES.decrypt(key, encryptedData);`
+
+ - Cluster en/decrypt a byte array 
+
+    `byte[] dataToEncrypt = "Some ****** very ****** bad text nobody is allowed to see".getBytes("UTF-8");
+    byte[] key           = SimpleAES.generateRandom(1024);
+    byte[] encryptedData = SimpleCluster.encrypt(key, dataToEncrypt);
+    //Some Time in between
+    byte[] decryptedData = SimpleCluster.decrypt(key, encryptedData);`
+    
+
+ - Encrypt an `Serializeable` Object
+
+    `Rectangle secretRectangle = new Rectangle(123, 448, 625, 326);
+		SecretKey key = SimpleAES.generateKey(128);
+		SealedObject encrypted = SimpleAES.encryptObject(secretRectangle, key);
+		//You can do whatever you want here. I save it into an File
+		File f = new File("C:/myfile.obj.enc");
+		FileOutputStream fos = new FileOutputStream(f);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(encrypted);`
  
 
 
