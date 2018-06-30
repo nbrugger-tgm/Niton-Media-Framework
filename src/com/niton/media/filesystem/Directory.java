@@ -19,7 +19,7 @@ public class Directory {
 	private Path file;
 
 	/**
-	 * Creates an Instance of Directory.java
+	 * Creates an Direectory with a specific path 
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
@@ -31,7 +31,7 @@ public class Directory {
 	}
 
 	/**
-	 * Creates an Instance of Directory.java
+	 * Creates an Directory with an Java NIO Path
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
@@ -48,7 +48,7 @@ public class Directory {
 	 * @author Nils
 	 * @version 2017-08-28
 	 * @param path
-	 *            the path to the Directory
+	 *            the old file object to loacate the File
 	 */
 	public Directory(File path) {
 		file = path.toPath();
@@ -69,10 +69,39 @@ public class Directory {
 		this.file = Paths.get(dir.getPathAsString(), fullName);
 	}
 
+	/**
+	 * 
+	 * Creates an Instance of Directory.java
+	 * 
+	 * @author Nils
+	 * @version 2017-08-28
+	 * @param dir
+	 *            the parent Directory of this Directory
+	 * @param path
+	 *            the following directories to create the path
+	 */
+	public Directory(Directory dir, String... paths) {
+		String slash = System.getProperty("file.separator");
+		String path = "";
+		for (int i = 0; i < paths.length; i++) {
+			path += paths[i] + (i + 1 < paths.length ? slash : "");
+		}
+		file = Paths.get(path);
+		this.file = Paths.get(dir.getPathAsString(), path);
+	}
+	
+	/**
+	 * Returns the java NIO Path object used as base for NFile
+	 * @author Nils
+	 * @version 2018-06-30
+	 * @return the NIO Path
+	 */
 	public Path getPath() {
 		return file;
 	}
 
+	
+	
 	/**
 	 * Description : Returns the absolute Path to the Directory on your computer
 	 * 
@@ -89,8 +118,9 @@ public class Directory {
 	}
 
 	/**
-	 * Description : <i>Mainly for windows.</i> The path D:/Data/ThisDir -> D:
-	 * or D:\
+	 * Description : <i>Mainly for windows.</i> <br>
+	 * In case of the path : <b>D:\Data\ThisDir</b> the result will be : <b>D:</b>
+	 * or <b>D:\</b>
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
