@@ -9,8 +9,7 @@ package com.niton.media.json;
 public enum JsonType {
 	STRING('\"', '\"'),
 	ARRAY('[', ']'),
-	OBJECT('{','}'),
-	PAIR(':',',');
+	OBJECT('{','}');
 	private final char openToken;
 	private final char closeToken;
 
@@ -18,17 +17,9 @@ public enum JsonType {
 		this.openToken = openToken;
 		this.closeToken = closeToken;
 	}
-
-	/**
-	 * @return the openToken
-	 */
 	public char getOpenToken() {
 		return openToken;
 	}
-
-	/**
-	 * @return the closeToken
-	 */
 	public char getCloseToken() {
 		return closeToken;
 	}

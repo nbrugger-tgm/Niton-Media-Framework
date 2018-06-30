@@ -1,12 +1,12 @@
-package com.niton.media.json;
+package com.niton.media.json.basic;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import com.niton.media.json.JsonType;
+import com.niton.media.json.io.StringInputStream;
 
 /**
  * This is the JsonArray Class
@@ -18,19 +18,20 @@ public class JsonArray<T extends JsonValue<?>> extends JsonValue<ArrayList<T>> i
 	public JsonArray(ArrayList<T> array) {
 		super(array);
 	}
-
-	/**
-	 * Creates an Instance of JsonArray.java
-	 * 
-	 * @author Nils
-	 * @version 2018-06-08
-	 */
 	public JsonArray() {
-		setValue(new ArrayList<>());
+		super(new ArrayList<>());
+	}
+	public JsonArray(T[] value) {
+		ArrayList<T> array = new ArrayList<>(value.length);
+		for (int i = 0; i < value.length; i++) {
+			T t = value[i];
+			array.add(t);
+		}
+		setValue(array);
 	}
 
 	/**
-	 * @see com.niton.media.json.JsonValue#getJson()
+	 * @see com.niton.media.json.basic.JsonValue#getJson()
 	 */
 	@Override
 	public String getJson() {
@@ -163,101 +164,43 @@ public class JsonArray<T extends JsonValue<?>> extends JsonValue<ArrayList<T>> i
 	public void clear() {
 		getValue().clear();
 	}
-
-	public final static Object[] getArray(Object val) {
-		if (val instanceof Object[])
-			return (Object[]) val;
-		int arrlength = Array.getLength(val);
-		Object[] outputArray = new Object[arrlength];
-		for (int i = 0; i < arrlength; ++i) {
-			outputArray[i] = Array.get(val, i);
-		}
-		return outputArray;
-	}
-
-	private enum PARSE {
-		NUMBER, STRING, ARRAY, OBJECT, BOOLEAN, ENUM;
-	}
-
 	/**
-	 * Description :
-	 * 
-	 * @author Nils
-	 * @version 2018-06-10
-	 * @param value
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
+	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
-	public void read(Object value) throws NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		PARSE p;
-		Class<?> c = value.getClass().getComponentType();
-		if (c.equals(boolean.class) || c.equals(Boolean.class))
-			p = PARSE.BOOLEAN;
-		else if (c.isEnum())
-			p = PARSE.ENUM;
-		else if (c.isPrimitive() || c.getSuperclass().equals(Number.class) || c.equals(Character.class))
-			p = PARSE.NUMBER;
-		else if (c.equals(String.class))
-			p = PARSE.STRING;
-		else if (c.isArray())
-			p = PARSE.ARRAY;
-		else
-			p = PARSE.OBJECT;
-		for (int i = 0; i < getValue().size(); i++) {
-			Object subVallue = null;
-			JsonValue<?> val = getValue().get(i);
-			if (!(val instanceof JsonString && val.getValue().equals("null") && !c.equals(String.class)))
-
-				switch (p) {
-				case ARRAY:
-					JsonArray<?> array = (JsonArray<?>) val;
-					subVallue = Array.newInstance(c.getComponentType(), array.size());
-					array.read(subVallue);
-					break;
-				case NUMBER:
-					JsonNumber number;
-					if (val instanceof JsonNumber)
-						number = (JsonNumber) val;
-					else
-						number = new JsonNumber(Double.parseDouble((String) val.getValue()));
-					if (c.isPrimitive())
-						c = Array.get(Array.newInstance(c, 1), 0).getClass();
-					if (!c.getName().contains("Integer"))
-						subVallue = Double.class.getMethod(c.getSimpleName().toLowerCase() + "Value")
-								.invoke(number.getValue());
-					else
-						subVallue = number.getValue().intValue();
-					break;
-				case OBJECT:
-					JsonObject ob = (JsonObject) val;
-					ob.read(subVallue);
-					break;
-				case STRING:
-					subVallue = val.getValue();
-					break;
-				case BOOLEAN:
-					subVallue = Boolean.parseBoolean((String) val.getValue());
-					break;
-				case ENUM:
-					for (Object o : c.getEnumConstants()) {
-						if (((Enum<?>) o).name().equals(val.getValue())) {
-							subVallue = o;
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean readNext(StringInputStream sis) throws IOException {
+		boolean suc = true;
+		JsonValue<?> last = null;
+		while(sis.hasNext()) {
+			char c = sis.readChar();
+			if(c == JsonType.ARRAY.getCloseToken()){
+				if(last != null)
+					add((T) last);
+				return suc;
+			}
+			else if (c == ',') {
+				add((T) last);
+			}else {
+				for(JsonType t : JsonType.values()) {
+					if(t.getOpenToken() == c) {
+						switch (t) {
+						case ARRAY:
+							last = new JsonArray<>();
+							break;
+						case OBJECT:
+							last = new JsonObject();
+							break;
+						case STRING:
+							last = new JsonString();
 							break;
 						}
+						suc = suc && last.readNext(sis);
+						break;
 					}
-					subVallue = null;
-
-					break;
-				default:
-					break;
 				}
-
-			Array.set(value, i, subVallue);
+			}
 		}
+		return false;
 	}
 }

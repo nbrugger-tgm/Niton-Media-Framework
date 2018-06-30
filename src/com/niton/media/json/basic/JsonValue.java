@@ -1,4 +1,8 @@
-package com.niton.media.json;
+package com.niton.media.json.basic;
+
+import java.io.IOException;
+
+import com.niton.media.json.io.StringInputStream;
 
 /**
  * This is the JsonValue Class
@@ -15,13 +19,10 @@ public abstract class JsonValue<T>{
 	public T getValue() {
 		return o;
 	}
+	public abstract boolean readNext(StringInputStream sis) throws IOException;
 	public void setValue(T value) {
 		this.o = value;
 	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return getJson();

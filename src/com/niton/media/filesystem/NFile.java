@@ -20,10 +20,11 @@ import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
 
 import com.niton.media.ResurceLoader;
-import com.niton.media.json.JsonObject;
 import com.niton.media.json.JsonParser;
-import com.niton.media.json.JsonValue;
-import com.niton.media.json.StringInputStream;
+import com.niton.media.json.basic.JsonObject;
+import com.niton.media.json.basic.JsonValue;
+import com.niton.media.json.io.JsonInputStream;
+import com.niton.media.json.io.StringInputStream;
 
 public class NFile {
 	private Path file;
@@ -107,13 +108,8 @@ public class NFile {
 	}
 
 	public void save() throws IOException {
-		try {
-			Files.createDirectories(file.getParent());
-			Files.createFile(getPath());
-		} catch (FileAlreadyExistsException e) {
-			System.out.print("File : " + getPathAsString() + " ");
-			System.err.println("Already Exists Error while saving! [By Niton Media Libarty] ");
-		}
+		Files.createDirectories(file.getParent());
+		Files.createFile(getPath());
 	}
 
 	public void delete() throws IOException {
@@ -162,7 +158,6 @@ public class NFile {
 				bb.clear();
 			}
 		} catch (IOException e) {
-			System.out.println("Error : return new byte[0]");
 			e.printStackTrace();
 		}
 	}
@@ -314,8 +309,10 @@ public class NFile {
 
 	public JsonValue<?> readJson() {
 		try {
-			StringInputStream in = new StringInputStream(new String(Files.readAllBytes(file), "UTF-8"));
-			return JsonParser.parseNextJson(in);
+			JsonInputStream jis = new JsonInputStream(this);
+			JsonValue<?> calue = jis.readNextJson();
+			jis.close();
+			return calue;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

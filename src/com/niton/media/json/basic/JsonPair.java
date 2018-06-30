@@ -1,4 +1,9 @@
-package com.niton.media.json;
+package com.niton.media.json.basic;
+
+import java.io.IOException;
+
+import com.niton.media.json.io.JsonInputStream;
+import com.niton.media.json.io.StringInputStream;
 
 /**
  * This is the JsonPair Class
@@ -39,8 +44,27 @@ public class JsonPair<T extends JsonValue<?>> extends JsonValue<T> {
 		builder.append(string.getJson());
 		builder.append(" : ");
 		builder.append(getValue().getJson());
-		builder.append(',');
 		return builder.toString();
+	}
+	/**
+	 * @throws IOException 
+	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean readNext(StringInputStream sis) throws IOException {
+		boolean succ = true;
+		JsonString s = new JsonString();
+		succ = succ && s.readNext(sis);
+		setName(s.getValue());
+		while(sis.hasNext()) {
+			if(sis.readChar() == ':')
+				break;
+		}
+		JsonInputStream jsin = new JsonInputStream(sis);
+		T t = (T) jsin.readNextJson();
+		setValue(t);
+		return succ;
 	}
 }
 

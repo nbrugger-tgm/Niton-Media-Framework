@@ -10,7 +10,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
@@ -19,13 +24,21 @@ import com.niton.media.audio.AudioFileRecorder;
 import com.niton.media.audio.AudioQuality;
 import com.niton.media.audio.AudioRecorder;
 import com.niton.media.audio.IllegalStateException;
+import com.niton.media.audio.nio.PlayMode;
 import com.niton.media.audio.nio.basic.MP3Player;
 import com.niton.media.crypt.Cluster;
 import com.niton.media.crypt.ClusterCryptedInputStream;
 import com.niton.media.crypt.ClusterCryptedOutputStream;
 import com.niton.media.filesystem.DataStore;
 import com.niton.media.filesystem.NFile;
-import com.niton.media.json.JsonObject;
+import com.niton.media.json.basic.JsonArray;
+import com.niton.media.json.basic.JsonObject;
+import com.niton.media.json.basic.JsonString;
+import com.niton.media.json.io.JsonInputStream;
+import com.niton.media.json.io.JsonOutputStream;
+import com.niton.media.json.io.StringInputStream;
+import com.niton.media.json.types.JsonDouble;
+import com.niton.media.json.types.JsonInt;
 import com.niton.media.visual.Canvas;
 import com.niton.media.visual.JNetworkPanel;
 
@@ -33,14 +46,8 @@ import javazoom.jl.decoder.JavaLayerException;
 
 public class Main {
 
-	public static void main(String[] args) {
-		try {
-			testJson();
-//			testCryStream();
-//			testNetwork();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws Exception{
+		testJson();
 	}
 
 	/**
@@ -48,24 +55,38 @@ public class Main {
 	 * @author Nils
 	 * @version 2018-06-09
 	 * @throws JavaLayerException 
-	 * @throws FileNotFoundException 
 	 * @throws InvocationTargetException 
 	 * @throws InstantiationException 
 	 * @throws SecurityException 
 	 * @throws NoSuchMethodException 
+	 * @throws IllegalAccessException 
+	 * @throws IOException 
 	 */
-	private static void testJson() throws FileNotFoundException, JavaLayerException, NoSuchMethodException, SecurityException, InstantiationException, InvocationTargetException {
-		ExtremeTest test = new ExtremeTest("quail");
-		JsonObject obj;
-		try {
-			obj = new JsonObject(test);
-			System.out.println(obj.getJson());
-			ExtremeTest copy = new ExtremeTest("");
-			obj.read(copy);
-			System.out.println(new JsonObject(copy).getJson());
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
+	private static void testJson() throws JavaLayerException, NoSuchMethodException, SecurityException, InstantiationException, InvocationTargetException, IllegalAccessException, IOException {
+		System.out.println("Simple JSON Test:");
+		
+		System.out.println("Creating : ");
+		JsonObject o = new JsonObject();
+		JsonArray<JsonString> theArray = new JsonArray<>();
+		o.add("theArray", theArray);
+		o.add("enum", PlayMode.PLAYLIST);
+		o.add("int", new JsonInt(13));
+		o.add("double", new JsonDouble(12.3456789));
+		JsonOutputStream jout = new JsonOutputStream(System.out);
+		jout.write(o);
+		System.out.println("\n");
+		System.out.println("Reading");
+		String s = o.getJson();
+		JsonInputStream jis = new JsonInputStream(new StringInputStream(s));
+		JsonObject obj = jis.readNextObject();
+		System.out.println(obj.getJson());
+		
+		
+		
+//		ExtremeTest test = new ExtremeTest("quail");
+//		JsonOutputStream output = new JsonOutputStream(System.out);
+//		output.write(test);
+//		output.close();
 	}
 
 	/**
