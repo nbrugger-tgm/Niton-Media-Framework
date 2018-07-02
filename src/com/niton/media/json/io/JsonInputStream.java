@@ -72,10 +72,10 @@ public class JsonInputStream {
 					switch (type) {
 					case ARRAY:
 						val = new JsonArray<>();
-						break wh;
+						break;
 					case OBJECT:
 						val = new JsonObject();
-						break wh;
+						break;
 					case STRING:
 						val = new JsonString();
 						break;

@@ -10,18 +10,18 @@ import com.niton.media.json.io.StringInputStream;
  * @version 2018-06-05
  */
 public abstract class JsonValue<T>{
-	private T o;
+	private Object o;
 	public JsonValue() {}
 	public JsonValue(T value) {
 		this.o = value;
 	}
 	public abstract String getJson();
 	public T getValue() {
-		return o;
+		return (T) o;
 	}
 	public abstract boolean readNext(StringInputStream sis) throws IOException;
-	public void setValue(T value) {
-		this.o = value;
+	public void setValue(T t) {
+		this.o = t;
 	}
 	@Override
 	public String toString() {
