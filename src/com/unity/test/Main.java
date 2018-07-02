@@ -39,6 +39,7 @@ import com.niton.media.json.io.JsonOutputStream;
 import com.niton.media.json.io.StringInputStream;
 import com.niton.media.json.types.JsonDouble;
 import com.niton.media.json.types.JsonInt;
+import com.niton.media.json.types.JsonSerialObject;
 import com.niton.media.visual.Canvas;
 import com.niton.media.visual.JNetworkPanel;
 
@@ -63,30 +64,36 @@ public class Main {
 	 * @throws IOException 
 	 */
 	private static void testJson() throws JavaLayerException, NoSuchMethodException, SecurityException, InstantiationException, InvocationTargetException, IllegalAccessException, IOException {
+		JsonOutputStream jout = new JsonOutputStream(System.out);
 		System.out.println("Simple JSON Test:");
-		
 		System.out.println("Creating : ");
 		JsonObject o = new JsonObject();
 		JsonArray<JsonString> theArray = new JsonArray<>();
+		theArray.add(new JsonString("test1"));
+		theArray.add(new JsonString("test2"));
 		o.add("theArray", theArray);
 		o.add("enum", PlayMode.PLAYLIST);
 		o.add("int", new JsonInt(13));
 		o.add("double", new JsonDouble(12.3456789));
-		JsonOutputStream jout = new JsonOutputStream(System.out);
 		jout.write(o);
 		System.out.println("\n");
+		
+		
 		System.out.println("Reading");
 		String s = o.getJson();
 		JsonInputStream jis = new JsonInputStream(new StringInputStream(s));
 		JsonObject obj = jis.readNextObject();
 		System.out.println(obj.getJson());
 		
+		System.out.println("Serializing : ");
+		ExtremeTest test = new ExtremeTest("quail");
+		jout.write(test);
 		
-		
-//		ExtremeTest test = new ExtremeTest("quail");
-//		JsonOutputStream output = new JsonOutputStream(System.out);
-//		output.write(test);
-//		output.close();
+		System.out.println("Deserialize : ");
+		String serial = new JsonSerialObject(test).getJson();
+		JsonSerialObject jso = new JsonSerialObject();
+		jso.readNext(new StringInputStream(serial));
+		jout.write(jso);
 	}
 
 	/**

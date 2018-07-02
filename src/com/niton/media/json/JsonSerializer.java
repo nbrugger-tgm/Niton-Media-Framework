@@ -15,6 +15,7 @@ import com.niton.media.json.types.JsonInt;
 import com.niton.media.json.types.JsonLong;
 import com.niton.media.json.types.JsonShort;
 import com.niton.media.json.types.advanced.JsonArrayList;
+import com.niton.media.json.types.advanced.JsonHashMap;
 
 /**
  * This is the JsonSerializer Class
@@ -22,6 +23,7 @@ import com.niton.media.json.types.advanced.JsonArrayList;
  * @author Nils
  * @version 2018-06-29
  */
+@SuppressWarnings("unchecked")
 public class JsonSerializer {
 	private static HashMap<Class<?>, Class<? extends JsonValue<?>>> typeTable = new HashMap<>();
 	static {
@@ -37,9 +39,9 @@ public class JsonSerializer {
 		
 		
 		registerJsonType(ArrayList.class, (Class<? extends JsonValue<?>>) JsonArrayList.class);
+		registerJsonType(HashMap.class, (Class<? extends JsonValue<?>>) JsonHashMap.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T> Class<? extends JsonValue<T>> getJsonFor(Class<T> c) {
 		return (Class<? extends JsonValue<T>>) typeTable.get(c);
 	}
