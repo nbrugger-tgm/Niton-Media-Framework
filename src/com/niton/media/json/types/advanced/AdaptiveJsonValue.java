@@ -10,6 +10,7 @@ import com.niton.media.json.basic.JsonObject;
 import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.StringInputStream;
+import com.niton.media.json.types.JsonEnum;
 import com.niton.media.json.types.JsonSerialArray;
 import com.niton.media.json.types.JsonSerialObject;
 
@@ -43,7 +44,7 @@ public class AdaptiveJsonValue extends JsonValue<Object> {
 			JsonValue obj;
 			Class<?> parserfieldType = JsonSerializer.getWrapper(type);
 			if (type.isEnum())
-				obj = new JsonString(((Enum<?>) val).name());
+				obj = new JsonEnum((Enum<?>) val);
 			else if (type.isArray()) {
 				if (type.getComponentType().isPrimitive()) {
 					Object[] warpped = (Object[]) Array.newInstance(
