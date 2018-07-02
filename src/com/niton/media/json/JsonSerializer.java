@@ -91,10 +91,36 @@ public class JsonSerializer {
 	}
 	public static ArrayList<Class<?>> getSuperTypes(Class<?> type){
 		ArrayList<Class<?>> list = new ArrayList<>();
+//		type = type.getSuperclass();
 		while(type != null) {
-			list.add(type.getSuperclass());
+			list.add(type);
 			type = type.getSuperclass();
 		}
 		return list;
+	}
+	
+	public static Class<?> getHigtestSuperType(Class<?>... types){
+		ArrayList<ArrayList<Class<?>>> supertypes = new ArrayList<>();
+		for (int i = 0; i < types.length; i++) {
+			supertypes.add(getSuperTypes(types[i]));
+		}
+		Class<?> higestType = null;
+		for (int i = 0;i<supertypes.get(0).size();i++) {
+			ArrayList<Class<?>> ebene = new ArrayList<>();
+			for (ArrayList<Class<?>> arrayList : supertypes) {
+				if(arrayList.size() == i)
+					return higestType;
+				ebene.add(arrayList.get(arrayList.size()-1-i));
+			}
+			boolean allEqual = true;
+			for (int j = 1;j<supertypes.size();j++) {
+				allEqual = allEqual && ebene.get(j).equals(ebene.get(j-1));
+			}
+			if(allEqual)
+				higestType = ebene.get(0);
+			else
+				break;
+		}
+		return higestType;
 	}
 }

@@ -9,6 +9,7 @@ import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.JsonInputStream;
 import com.niton.media.json.io.StringInputStream;
+import com.niton.media.json.types.advanced.AdaptiveJsonValue;
 
 /**
  * This is the JsonSerialPair Class
@@ -41,27 +42,9 @@ public class JsonSerialPair extends JsonValue<Object> {
 	public String getJson() {
 		try {
 			Object value = getValue();
-			Class<?> type = null;
-			JsonValue<?> jsonField;
-			if(value != null)
-				type = value.getClass();
-			if (value == null)
-				jsonField = new JsonString("null");
-			else if (type.isEnum())
-				jsonField = new JsonString(((Enum<?>) value).name());
-			else if (type.isArray())
-				jsonField = new JsonSerialArray<>((Object[]) value);
-			else {
-				Class<? extends JsonValue<?>> clazz = JsonSerializer.getJsonFor(type);
-				if (clazz == null)
-					clazz = JsonSerialObject.class;
-				jsonField = clazz.newInstance();
-				clazz.getField("o").set(jsonField, value);
-			}
-			JsonPair<JsonValue<?>> pair = new JsonPair<>(jsonField, name);
+			JsonPair<JsonValue<?>> pair = new JsonPair<>(new AdaptiveJsonValue(value), name);
 			return pair.getJson();
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException
-				| SecurityException e) {
+		} catch (IllegalArgumentException | SecurityException e) {
 			e.printStackTrace();
 			return null;
 		}

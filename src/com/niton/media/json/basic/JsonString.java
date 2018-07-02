@@ -33,16 +33,12 @@ public class JsonString extends JsonValue<String> {
 	@Override
 	public String getJson() {
 		StringBuilder builder = new StringBuilder();
-		StringInputStream stream;
-		stream = new StringInputStream(getValue());
+		int pos = 0;
 		builder.append('\"');
-		while (stream.hasNext()) {
+		while (pos < getValue().length()) {
 			char c = 0;
-			try {
-				c = stream.readChar();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			c = getValue().charAt(pos);
+			pos++;
 			switch (c) {
 			case '\"':
 				builder.append("\\\"");
@@ -85,37 +81,36 @@ public class JsonString extends JsonValue<String> {
 	public boolean readNext(StringInputStream sis) {
 		StringBuilder builder = new StringBuilder();
 		boolean escape = false;
-		while(sis.hasNext()) {
-			char c = 0;
-			try {
+		try {
+			while (sis.hasNext()) {
+				char c = 0;
 				c = sis.readChar();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			if(escape) {
-				if(c == '\\' || c == '\"' || c == '/')
-					builder.append(c);
-				if(c == 'b')
-					builder.append('\b');
-				if(c == 'f')
-					builder.append('\f');
-				if(c == 'n')
-					builder.append('\n');
-				if(c == 'r')
-					builder.append('\r');
-				if(c == 't')
-					builder.append('\t');
-				escape = false;
-			}else {
-				escape = c == '\\';
-				if(!escape)
-					if(c == JsonType.STRING.getCloseToken()){
-						setValue(builder.toString());
-						return true;
-					}
-					else
+				if (escape) {
+					if (c == '\\' || c == '\"' || c == '/')
 						builder.append(c);
+					if (c == 'b')
+						builder.append('\b');
+					if (c == 'f')
+						builder.append('\f');
+					if (c == 'n')
+						builder.append('\n');
+					if (c == 'r')
+						builder.append('\r');
+					if (c == 't')
+						builder.append('\t');
+					escape = false;
+				} else {
+					escape = c == '\\';
+					if (!escape)
+						if (c == JsonType.STRING.getCloseToken()) {
+							setValue(builder.toString());
+							return true;
+						} else
+							builder.append(c);
+				}
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return false;
 	}

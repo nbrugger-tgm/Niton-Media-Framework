@@ -10,6 +10,7 @@ import com.niton.media.audio.AudioQuality;
 import com.niton.media.audio.nio.basic.PlayState;
 import com.niton.media.crypt.Cluster;
 import com.niton.media.filesystem.NFile;
+import com.niton.media.json.basic.JsonObject;
 import com.niton.media.json.basic.JsonString;
 
 /**
@@ -35,6 +36,13 @@ public class ExtremeTest {
 	ExtremeTest t =  null;
 	private byte[] empty = null;
 	private HashMap<String, String> testMap = new HashMap<>();
+	private Object[] obArray = {
+			new B(),
+			new A(),
+			new JsonObject(),
+			java.lang.Thread.State.BLOCKED
+	};
+	private ArrayList<Object> allArrayList = new ArrayList<>();
 	
 	/**
 	 * Creates an Instance of ExtremeTest.java
@@ -46,6 +54,9 @@ public class ExtremeTest {
 		list.add(State.PAUSED);
 		testMap.put("nils", "brugger");
 		testMap.put("anna", "hickel");
+		allArrayList.add(new JsonString("abcdefString"));
+		allArrayList.add(new A());
+		allArrayList.add(new B());
 	}
 }
 

@@ -87,6 +87,11 @@ public class JsonInputStream {
 		}
 		return val;
 	}
+	
+	public <T extends JsonValue<?>> T readNextJson(Class<T> val){
+		return null;
+		
+	}
 	public void close() throws IOException {
 		sis.close();
 	}

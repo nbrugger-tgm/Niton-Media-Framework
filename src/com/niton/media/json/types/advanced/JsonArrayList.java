@@ -30,13 +30,13 @@ public class JsonArrayList<T> extends JsonValue<ArrayList<T>> {
 		JsonObject obj = new JsonObject();
 		if(getValue().size() == 0)
 			return obj.toString();
-		Class<?> highestSuperType = getValue().get(0).getClass();
-		for (Object o : getValue()) {
-			Class<?> type = o.getClass();
-			if(!JsonSerializer.getSuperTypes(type).contains(highestSuperType)) {
-				highestSuperType = type;
-			}
+		Class<?>[] types = new Class<?>[getValue().size()];
+		int i = 0;
+		for(T o : getValue()) {
+			types[i] = o.getClass();
+			i++;
 		}
+		Class<?> highestSuperType = JsonSerializer.getHigtestSuperType(types);
 		obj.add("elementType", highestSuperType.getName());
 		JsonSerialArray<?> array = new JsonSerialArray<>();
 		array.setValue(getValue().toArray());

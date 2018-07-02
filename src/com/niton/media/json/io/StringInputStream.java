@@ -24,7 +24,7 @@ import com.niton.media.filesystem.NFile;
 public class StringInputStream{
 	private static Charset chars = Charset.forName("UTF-8");
 	private Reader input;
-	boolean done = false;
+	int next = -2;
 	public StringInputStream(String wholeData) {
 		this(new ByteArrayInputStream(wholeData.getBytes(chars)));
 	}
@@ -35,13 +35,20 @@ public class StringInputStream{
 		this(new BufferedInputStream(file.getInputStream()));
 	}
 	public char readChar() throws IOException {
-		int i = input.read();
-		if(i == -1)
-			done = true;
-		return (char) i;
+		if(next == -2) {
+			return (char) input.read();
+		}
+		else {
+			char c = (char) next;
+			next = -2;
+			return c;
+		}
 	}
-	public boolean hasNext() {
-		return !done;
+	public boolean hasNext() throws IOException {
+		if(next == -2) {
+			next = input.read();
+		}
+		return next != -1;
 	}
 	/**
 	 * Description : 
