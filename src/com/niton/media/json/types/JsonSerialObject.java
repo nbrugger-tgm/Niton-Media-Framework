@@ -68,7 +68,7 @@ public class JsonSerialObject extends JsonValue<Object> {
 	@Override
 	public boolean readNext(StringInputStream sis) throws IOException {
 		boolean success = true;
-		JsonObject obj = new JsonObject();
+6		JsonObject obj = new JsonObject();
 		success = success && obj.readNext(sis);
 		Object value;
 		try {
@@ -81,10 +81,9 @@ public class JsonSerialObject extends JsonValue<Object> {
 						|| Modifier.isFinal(f.getModifiers()))
 					continue;
 				Class<?> fieldClass = f.getType();
-				JsonPair<JsonValue<?>> orig = new JsonPair<JsonValue<?>>(obj.get(f.getName()), f.getName());
 				JsonSerialPair serialPair = new JsonSerialPair();
 				serialPair.setJsonToParse(JsonSerializer.getJsonFor(fieldClass));
-				serialPair.readNext(new StringInputStream(orig.getJson()));
+				serialPair.readNext(sis);
 				f.set(value, serialPair.getValue());
 			}
 			setValue(value);
