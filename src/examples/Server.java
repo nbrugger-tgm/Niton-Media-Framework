@@ -1,4 +1,4 @@
-package com.unity.test;
+package examples;
 
 import java.io.IOException;
 import java.io.InputStream;

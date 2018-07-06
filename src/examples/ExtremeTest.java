@@ -1,4 +1,4 @@
-package com.unity.test;
+package examples;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +8,9 @@ import com.niton.media.audio.nio.basic.PlayState;
 import com.niton.media.crypt.Cluster;
 import com.niton.media.json.basic.JsonObject;
 import com.niton.media.json.basic.JsonString;
+
+import examples.json.A;
+import examples.json.B;
 
 /**
  * This is the ExtremeTest Class

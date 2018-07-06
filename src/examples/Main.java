@@ -1,4 +1,4 @@
-package com.unity.test;
+package examples;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

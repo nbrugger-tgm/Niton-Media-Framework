@@ -18,8 +18,9 @@ import com.niton.media.json.types.JsonLong;
 import com.niton.media.json.types.JsonShort;
 import com.niton.media.json.types.advanced.JsonArrayList;
 import com.niton.media.json.types.advanced.JsonHashMap;
-import com.unity.test.A;
-import com.unity.test.JsonA;
+
+import examples.JsonA;
+import examples.json.A;
 
 /**
  * This is the JsonSerializer Class
