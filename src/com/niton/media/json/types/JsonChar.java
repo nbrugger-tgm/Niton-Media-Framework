@@ -1,5 +1,7 @@
 package com.niton.media.json.types;
 
+import java.io.IOException;
+
 import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.StringInputStream;
@@ -23,13 +25,13 @@ public class JsonChar extends JsonValue<Character> {
 	}
 
 	/**
+	 * @throws IOException 
 	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
 	@Override
-	public boolean readNext(StringInputStream sis) {
+	public void readNext(StringInputStream sis) throws IOException {
 		JsonString s = new JsonString();
-		boolean c  = s.readNext(sis);
+		s.readNext(sis);
 		setValue(s.getValue().charAt(0));
-		return c;
 	}
 }

@@ -3,6 +3,8 @@ package com.niton.media.json.basic;
 import java.io.IOException;
 
 import com.niton.media.json.JsonType;
+import com.niton.media.json.exceptions.JsonEscapeException;
+import com.niton.media.json.exceptions.JsonNotClosedException;
 import com.niton.media.json.io.StringInputStream;
 
 /**
@@ -75,43 +77,45 @@ public class JsonString extends JsonValue<String> {
 	}
 
 	/**
+	 * @throws IOException 
 	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
 	@Override
-	public boolean readNext(StringInputStream sis) {
+	public void readNext(StringInputStream sis) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		boolean escape = false;
-		try {
-			while (sis.hasNext()) {
-				char c = 0;
-				c = sis.readChar();
-				if (escape) {
-					if (c == '\\' || c == '\"' || c == '/')
+		while (sis.hasNext()) {
+			char c = 0;
+			c = sis.readChar();
+			if (escape) {
+				if (c == '\\' || c == '\"' || c == '/')
+					builder.append(c);
+				if (c == 'b')
+					builder.append('\b');
+				if (c == 'f')
+					builder.append('\f');
+				if (c == 'n')
+					builder.append('\n');
+				if (c == 'r')
+					builder.append('\r');
+				if (c == 't')
+					builder.append('\t');
+				else
+					throw new JsonEscapeException(c+"", true);
+				escape = false;
+			} else {
+				escape = c == '\\';
+				if (!escape) {
+					if (c == JsonType.STRING.getCloseToken()) {
+						setValue(builder.toString());
+						return;
+					}else if(c == '/' || c=='\b' || c == '\f' || c == '\n' || c == '\r' || c == '\t') {
+						throw new JsonEscapeException(c+"", false);
+					}else
 						builder.append(c);
-					if (c == 'b')
-						builder.append('\b');
-					if (c == 'f')
-						builder.append('\f');
-					if (c == 'n')
-						builder.append('\n');
-					if (c == 'r')
-						builder.append('\r');
-					if (c == 't')
-						builder.append('\t');
-					escape = false;
-				} else {
-					escape = c == '\\';
-					if (!escape)
-						if (c == JsonType.STRING.getCloseToken()) {
-							setValue(builder.toString());
-							return true;
-						} else
-							builder.append(c);
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		return false;
+		throw new JsonNotClosedException(JsonString.class);
 	}
 }

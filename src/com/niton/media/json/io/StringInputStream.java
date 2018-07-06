@@ -18,46 +18,131 @@ import com.niton.media.filesystem.NFile;
 
 /**
  * This is the StringInputStream Class
+ * 
  * @author Nils
  * @version 2018-06-06
  */
-public class StringInputStream{
+public class StringInputStream {
 	private static Charset chars = Charset.forName("UTF-8");
 	private Reader input;
-	int next = -2;
+	private int puffer = -2;
+	private StringInputStream pre, after;
+	private String debugIn,debugout="";
+
 	public StringInputStream(String wholeData) {
 		this(new ByteArrayInputStream(wholeData.getBytes(chars)));
+		debugIn = wholeData;
 	}
-	public StringInputStream(InputStream stream)  {
-		input = new BufferedReader(new InputStreamReader(stream, chars));
+
+	public StringInputStream(InputStream stream) {
+		input = new InputStreamReader(stream, chars);
 	}
+
 	public StringInputStream(NFile file) throws FileNotFoundException {
 		this(new BufferedInputStream(file.getInputStream()));
 	}
+
 	public char readChar() throws IOException {
-		if(next == -2) {
-			return (char) input.read();
+		if (pre != null) {
+			if (pre.hasNext()) {
+				char c = pre.readChar();
+				debugout += c;
+				return c;
+			}else
+				pre = null;
 		}
-		else {
-			char c = (char) next;
-			next = -2;
+
+		if (puffer != -2) {
+			char c = (char) puffer;
+			puffer = -2;
+			debugout += c;
 			return c;
+		} else {
+			puffer = input.read();
 		}
+		if (puffer == -1) {
+			if (after != null)
+				if(after.hasNext()) {
+					char c =  after.readChar();
+					debugout += c;
+					return c;
+				}else
+					after = null;
+			else
+				return (char) -1;
+		}
+		char c = (char) puffer;
+		puffer = -2;
+		debugout += c;
+		return c;
 	}
+
 	public boolean hasNext() throws IOException {
-		if(next == -2) {
-			next = input.read();
+		if (pre != null) {
+			if (!pre.hasNext())
+				pre = null;
+			else
+				return true;
 		}
-		return next != -1;
+		if (puffer == -2) {
+			puffer = input.read();
+		}
+		if (puffer == -1) {
+			if (after != null) {
+				if(after.hasNext()) {
+					puffer = -2;
+					return true;
+				}else {
+					after = null;
+					return false;
+				}
+			} else
+				return false;
+		}
+		else
+			return true;
 	}
+
 	/**
-	 * Description : 
+	 * Description :
+	 * 
 	 * @author Nils
 	 * @version 2018-06-30
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void close() throws IOException {
 		input.close();
 	}
-}
 
+	/**
+	 * Description :
+	 * 
+	 * @author Nils
+	 * @version 2018-07-05
+	 * @param sis2
+	 */
+	public void setPreStream(StringInputStream sis2) {
+		this.pre = sis2;
+	}
+
+	/**
+	 * @param after the after to set
+	 */
+	public void setAfterStream(StringInputStream after) {
+		this.after = after;
+	}
+	
+	/**
+	 * @return the after
+	 */
+	public StringInputStream getAfterStream() {
+		return after;
+	}
+	
+	/**
+	 * @return the pre
+	 */
+	public StringInputStream getPreStream() {
+		return pre;
+	}
+}

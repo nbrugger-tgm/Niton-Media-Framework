@@ -5,7 +5,7 @@ package com.niton.media.json.types.advanced;
  * @author Nils
  * @version 2018-07-02
  */
-public class HashPair {
+class HashPair {
 	private Object key;
 	private Object value;
 	/**

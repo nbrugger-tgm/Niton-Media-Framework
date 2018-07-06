@@ -1,4 +1,4 @@
-package com.niton.media.json.types;
+package com.unity.test;
 
 import java.io.IOException;
 
@@ -7,13 +7,23 @@ import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.StringInputStream;
 
 /**
- * This is the JsonByte Class
+ * This is the JsonA Class
  * @author Nils
- * @version 2018-06-30
+ * @version 2018-07-05
  */
-public class JsonShort extends JsonValue<Short> {
-	public JsonShort() {
+public class JsonA extends JsonValue<A> {
+	public JsonA() {
 
+	}
+
+	/**
+	 * Creates an Instance of JsonA.java
+	 * @author Nils
+	 * @version 2018-07-05
+	 * @param a
+	 */
+	public JsonA(A a) {
+		setValue(a);
 	}
 
 	/**
@@ -21,18 +31,22 @@ public class JsonShort extends JsonValue<Short> {
 	 */
 	@Override
 	public String getJson() {
-		return "\""+getValue().toString()+"\"";
+		JsonString s = new JsonString();
+		s.setValue(getValue().a+"-"+getValue().b);
+		return s.getJson();
 	}
 
 	/**
-	 * @throws IOException 
 	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
 	@Override
 	public void readNext(StringInputStream sis) throws IOException {
 		JsonString s = new JsonString();
 		s.readNext(sis);
-		setValue(Short.parseShort(s.getValue()));
+		A a = new A();
+		a.a = s.getValue().split("-")[0].charAt(0);
+		a.b = s.getValue().split("-")[1].charAt(0); 
+		setValue(a);
 	}
 }
 

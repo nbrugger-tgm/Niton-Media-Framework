@@ -19,13 +19,27 @@ public abstract class JsonValue<T>{
 	public T getValue() {
 		return (T) o;
 	}
-	public abstract boolean readNext(StringInputStream sis) throws IOException;
+	public abstract void readNext(StringInputStream sis) throws IOException;
 	public void setValue(T t) {
 		this.o = t;
 	}
 	@Override
 	public String toString() {
 		return getJson();
+	}
+	/**
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		JsonValue<T> newJson;
+		try {
+			newJson = getClass().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			return null;
+		}
+		newJson.o = this.o;
+		return newJson;
 	}
 }
 

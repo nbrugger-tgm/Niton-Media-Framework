@@ -40,6 +40,7 @@ import com.niton.media.json.io.StringInputStream;
 import com.niton.media.json.types.JsonDouble;
 import com.niton.media.json.types.JsonInt;
 import com.niton.media.json.types.JsonSerialObject;
+import com.niton.media.json.types.advanced.AdaptiveJsonValue;
 import com.niton.media.visual.Canvas;
 import com.niton.media.visual.JNetworkPanel;
 
@@ -47,64 +48,51 @@ import javazoom.jl.decoder.JavaLayerException;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		testJson();
 	}
 
 	/**
-	 * Description : 
+	 * Description :
+	 * 
 	 * @author Nils
 	 * @version 2018-06-09
-	 * @throws JavaLayerException 
-	 * @throws InvocationTargetException 
-	 * @throws InstantiationException 
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws IllegalAccessException 
-	 * @throws IOException 
+	 * @throws JavaLayerException
+	 * @throws InvocationTargetException
+	 * @throws InstantiationException
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws IllegalAccessException
+	 * @throws IOException
+	 * @throws CloneNotSupportedException
 	 */
-	private static void testJson() throws JavaLayerException, NoSuchMethodException, SecurityException, InstantiationException, InvocationTargetException, IllegalAccessException, IOException {
+	@SuppressWarnings("unchecked")
+	private static void testJson()
+			throws JavaLayerException, NoSuchMethodException, SecurityException, InstantiationException,
+			InvocationTargetException, IllegalAccessException, IOException, CloneNotSupportedException {
 		JsonOutputStream jout = new JsonOutputStream(System.out);
-		System.out.println("Simple JSON Test:");
-		System.out.println("Creating : ");
-		JsonObject o = new JsonObject();
-		JsonArray<JsonString> theArray = new JsonArray<>();
-		theArray.add(new JsonString("test1"));
-		theArray.add(new JsonString("test2"));
-		o.add("theArray", theArray);
-		o.add("enum", PlayMode.PLAYLIST);
-		o.add("int", new JsonInt(13));
-		o.add("double", new JsonDouble(12.3456789));
-		jout.write(o);
-		System.out.println("\n");
-		
-		
-		System.out.println("Reading");
-		String s = o.getJson();
-		JsonInputStream jis = new JsonInputStream(new StringInputStream(s));
-		JsonObject obj = jis.readNextObject();
-		System.out.println(obj.getJson());
-		
 		System.out.println("Serializing : ");
-		ExtremeTest test = new ExtremeTest("quail");
+		ExtremeTest test = new ExtremeTest("ccc");
 		jout.write(test);
 		
 		System.out.println("Deserialize : ");
-		String serial = new JsonSerialObject(test).getJson();
-		JsonSerialObject jso = new JsonSerialObject();
-		jso.readNext(new StringInputStream(serial));
-		jout.write(jso);
+		String serial = new AdaptiveJsonValue(test).getJson();
+		JsonInputStream jis = new JsonInputStream(new StringInputStream(serial));
+		Object c = jis.readNextObject();
+		jout.write(c);
+		
 	}
 
 	/**
-	 * Description : 
+	 * Description :
+	 * 
 	 * @author Nils
 	 * @version 2018-06-04
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private static void testCryStream() throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ClusterCryptedOutputStream cos = new ClusterCryptedOutputStream(new byte[] {120,2,3}, bos, 512);
+		ClusterCryptedOutputStream cos = new ClusterCryptedOutputStream(new byte[] { 120, 2, 3 }, bos, 512);
 		DataOutputStream dos = new DataOutputStream(cos);
 		dos.writeUTF("I BIMS");
 		dos.writeUTF("Doch nicht");
@@ -158,7 +146,7 @@ public class Main {
 		bos.close();
 		System.out.println(new String(out));
 		ByteArrayInputStream bis = new ByteArrayInputStream(out);
-		ClusterCryptedInputStream cis = new ClusterCryptedInputStream(new byte[] {120,2,3}, bis, 512);
+		ClusterCryptedInputStream cis = new ClusterCryptedInputStream(new byte[] { 120, 2, 3 }, bis, 512);
 		DataInputStream dis = new DataInputStream(cis);
 		System.out.println(dis.readUTF());
 		System.out.println(dis.readUTF());
@@ -285,5 +273,4 @@ public class Main {
 		}).start();
 	}
 
-	
 }

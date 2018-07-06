@@ -4,15 +4,20 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 
 import com.niton.media.json.JsonSerializer;
+import com.niton.media.json.JsonType;
 import com.niton.media.json.basic.JsonObject;
 import com.niton.media.json.basic.JsonPair;
 import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
+import com.niton.media.json.exceptions.JsonParsingException;
+import com.niton.media.json.io.JsonInputStream;
 import com.niton.media.json.io.StringInputStream;
 import com.niton.media.json.types.advanced.AdaptiveJsonValue;
 
@@ -38,7 +43,7 @@ public class JsonSerialObject extends JsonValue<Object> {
 	}
 
 	/**
-	 * @throws InstantiationException 
+	 * @throws InstantiationException
 	 * @see com.niton.media.json.basic.JsonValue#getJson()
 	 */
 	@Override
@@ -47,9 +52,10 @@ public class JsonSerialObject extends JsonValue<Object> {
 			Object val = getValue();
 			Class<?> type = val.getClass();
 			JsonObject obj = new JsonObject();
-			obj.add("class", new JsonString(type.getName()));
+//			obj.add("class", new JsonString(type.getName()));
 			for (Field field : JsonSerializer.getFields(type)) {
-				if(Modifier.isFinal(field.getModifiers()) || Modifier.isStatic(field.getModifiers()) ||Modifier.isTransient(field.getModifiers()))
+				if (Modifier.isFinal(field.getModifiers()) || Modifier.isStatic(field.getModifiers())
+						|| Modifier.isTransient(field.getModifiers()))
 					continue;
 				field.setAccessible(true);
 				obj.add(field.getName(), new AdaptiveJsonValue(field.get(val)));
@@ -66,31 +72,45 @@ public class JsonSerialObject extends JsonValue<Object> {
 	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
 	@Override
-	public boolean readNext(StringInputStream sis) throws IOException {
-		boolean success = true;
-6		JsonObject obj = new JsonObject();
-		success = success && obj.readNext(sis);
+	public void readNext(StringInputStream sis) throws IOException {
+		JsonObject obj = new JsonObject();
+		obj.readNext(sis);
 		Object value;
 		try {
-			Class<?> outClass = Class.forName((String) obj.get("class").getValue());
+			Class<?> outClass = typeToRead;
+			if(outClass.isEnum()) {
+				JsonEnum jenum = new JsonEnum();
+				StringInputStream sis2 = new StringInputStream(obj.getJson());
+				sis2.readChar();
+				jenum.readNext(sis2);
+				setValue(jenum.getValue());
+			}
 			Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer
 			value = objenesis.newInstance(outClass);
-			for (Field f : outClass.getDeclaredFields()) {
+			StringInputStream jis;
+			for (Field f : JsonSerializer.getFields(outClass)) {
 				f.setAccessible(true);
 				if (Modifier.isTransient(f.getModifiers()) || Modifier.isStatic(f.getModifiers())
 						|| Modifier.isFinal(f.getModifiers()))
 					continue;
-				Class<?> fieldClass = f.getType();
-				JsonSerialPair serialPair = new JsonSerialPair();
-				serialPair.setJsonToParse(JsonSerializer.getJsonFor(fieldClass));
-				serialPair.readNext(sis);
-				f.set(value, serialPair.getValue());
+				JsonValue<?> valueAsPlainJson = obj.get(f.getName());
+				jis = new StringInputStream(valueAsPlainJson.getJson());
+				jis.readChar();
+				AdaptiveJsonValue serialPair = new AdaptiveJsonValue();
+				serialPair.readNext(jis);
+				Object fieldValue = serialPair.getValue();
+				f.set(value, fieldValue);
 			}
 			setValue(value);
-		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-			return false;
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			throw new JsonParsingException(e);
 		}
-		return success;
+	}
+	private Class<?> typeToRead ;
+	/**
+	 * @param typeToRead the typeToRead to set
+	 */
+	public void setTypeToRead(Class<?> typeToRead) {
+		this.typeToRead = typeToRead;
 	}
 }

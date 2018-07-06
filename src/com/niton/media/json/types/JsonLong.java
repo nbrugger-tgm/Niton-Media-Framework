@@ -1,7 +1,10 @@
 package com.niton.media.json.types;
 
+import java.io.IOException;
+
 import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
+import com.niton.media.json.exceptions.JsonParsingException;
 import com.niton.media.json.io.StringInputStream;
 
 /**
@@ -20,15 +23,13 @@ public class JsonLong extends JsonValue<Long> {
 	}
 
 	@Override
-	public boolean readNext(StringInputStream sis) {
-		boolean worked;
+	public void readNext(StringInputStream sis) throws IOException {
 		JsonString s = new JsonString();
-		worked = s.readNext(sis);
+		s.readNext(sis);
 		try {
 			setValue(Long.parseLong(s.getValue()));
 		} catch (Exception e) {
-			worked = false;
+			throw new JsonParsingException(e);
 		}
-		return worked;
 	}
 }

@@ -169,15 +169,18 @@ public class JsonArray<T extends JsonValue<?>> extends JsonValue<ArrayList<T>> i
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean readNext(StringInputStream sis) throws IOException {
-		boolean suc = true;
+	public void readNext(StringInputStream sis) throws IOException {
+		setValue(new ArrayList<>());
 		JsonValue<?> last = null;
 		while(sis.hasNext()) {
 			char c = sis.readChar();
+//			if(c == JsonType.ARRAY.getOpenToken()) {
+//				setValue(new ArrayList<>());
+//			}
 			if(c == JsonType.ARRAY.getCloseToken()){
 				if(last != null)
 					add((T) last);
-				return suc;
+				return;
 			}
 			else if (c == ',') {
 				add((T) last);
@@ -195,12 +198,11 @@ public class JsonArray<T extends JsonValue<?>> extends JsonValue<ArrayList<T>> i
 							last = new JsonString();
 							break;
 						}
-						suc = suc && last.readNext(sis);
+						last.readNext(sis);
 						break;
 					}
 				}
 			}
 		}
-		return false;
 	}
 }

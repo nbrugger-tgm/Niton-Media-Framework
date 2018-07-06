@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import com.niton.media.json.JsonSerializer;
 import com.niton.media.json.JsonType;
 import com.niton.media.json.basic.JsonArray;
-import com.niton.media.json.basic.JsonObject;
-import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.StringInputStream;
 import com.niton.media.json.types.advanced.AdaptiveJsonValue;
@@ -19,7 +17,7 @@ import com.niton.media.json.types.advanced.AdaptiveJsonValue;
  * @author Nils
  * @version 2018-06-30
  */
-public class JsonSerialArray<T> extends JsonValue<Object[]> {
+public class JsonSerialArray<T> extends JsonValue<Object> {
 	public JsonSerialArray() {
 	}
 
@@ -29,7 +27,7 @@ public class JsonSerialArray<T> extends JsonValue<Object[]> {
 
 	@SuppressWarnings("unchecked")
 	public JsonSerialArray(ArrayList<T> array) {
-		setValue((T[]) array.toArray());
+		setValue(array.toArray());
 	}
 
 	private enum PARSE {
@@ -55,34 +53,35 @@ public class JsonSerialArray<T> extends JsonValue<Object[]> {
 	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
 	@Override
-	public boolean readNext(StringInputStream sis) throws IOException {
-		try {
-			ArrayList<T> collector = new ArrayList<>();
-			@SuppressWarnings("unchecked")
-			T[] array = (T[]) Array.newInstance(Object.class, 1);
-			@SuppressWarnings("unchecked")
-			Class<T> component = (Class<T>) array.getClass().getComponentType();
-			Class<? extends JsonValue<T>> jsonComponent = JsonSerializer.getJsonFor(component);
-
-			boolean suc = true;
-			JsonValue<T> last = jsonComponent.newInstance();
-			while (sis.hasNext()) {
-				char c = sis.readChar();
-				if (c == JsonType.ARRAY.getCloseToken()) {
-					if (last != null)
-						collector.add(last.getValue());
-					break;
-				} else if (c == ',') {
+	public void readNext(StringInputStream sis) throws IOException {
+		ArrayList<Object> collector = new ArrayList<>();
+		AdaptiveJsonValue last = null;
+		while (sis.hasNext()) {
+			char c = sis.readChar();
+			if (c == JsonType.ARRAY.getCloseToken()) {
+				if (last != null) {
 					collector.add(last.getValue());
-				} else {
-					last = jsonComponent.newInstance();
-
-					suc = suc && last.readNext(sis);
 				}
+				Object array = Array.newInstance(toRead, collector.size());
+				for (int i = 0; i < collector.size(); i++) {
+					Array.set(array, i, collector.get(i));
+				}
+				if (toRead.isPrimitive())
+					setValue(JsonSerializer.toPrimitiveArray(array, toRead));
+				else
+					setValue(array);
+			} else if (c == ',') {
+				collector.add(last.getValue());
+			} else {
+				for (JsonType t : JsonType.values()) {
+					if (t.getOpenToken() == c) {
+						last = new AdaptiveJsonValue();
+						last.readNext(sis);
+						break;
+					}
+				}
+
 			}
-			return suc;
-		} catch (InstantiationException | IllegalAccessException e) {
-			return false;
 		}
 	}
 
@@ -95,5 +94,14 @@ public class JsonSerialArray<T> extends JsonValue<Object[]> {
 			outputArray[i] = Array.get(val, i);
 		}
 		return outputArray;
+	}
+
+	private Class<?> toRead;
+
+	/**
+	 * @param toRead the toRead to set
+	 */
+	public void setToRead(Class<?> toRead) {
+		this.toRead = toRead;
 	}
 }

@@ -1,6 +1,8 @@
 package com.niton.media.json;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +18,8 @@ import com.niton.media.json.types.JsonLong;
 import com.niton.media.json.types.JsonShort;
 import com.niton.media.json.types.advanced.JsonArrayList;
 import com.niton.media.json.types.advanced.JsonHashMap;
+import com.unity.test.A;
+import com.unity.test.JsonA;
 
 /**
  * This is the JsonSerializer Class
@@ -37,7 +41,7 @@ public class JsonSerializer {
 		registerJsonType(Float.class, JsonFloat.class);
 		registerJsonType(Double.class, JsonDouble.class);
 		
-		
+		registerJsonType(A.class, JsonA.class);
 		registerJsonType(ArrayList.class, (Class<? extends JsonValue<?>>) JsonArrayList.class);
 		registerJsonType(HashMap.class, (Class<? extends JsonValue<?>>) JsonHashMap.class);
 	}
@@ -122,5 +126,26 @@ public class JsonSerializer {
 				break;
 		}
 		return higestType;
+	}
+
+	/**
+	 * Description : 
+	 * @author Nils
+	 * @version 2018-07-04
+	 * @param value
+	 * @return
+	 */
+	public static Object toPrimitiveArray(Object value,Class<?> primitive) {
+		Class<?> wrapper = getWrapper(primitive);
+		Object simpleArray = Array.newInstance(primitive, Array.getLength(value));
+		for(int i = 0;i<Array.getLength(value);i++) {
+			try {
+				Array.set(simpleArray, i, wrapper.getMethod(primitive.getName()+"Value").invoke(Array.get(value, i)));
+			} catch (ArrayIndexOutOfBoundsException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
+		}
+		return simpleArray;
 	}
 }

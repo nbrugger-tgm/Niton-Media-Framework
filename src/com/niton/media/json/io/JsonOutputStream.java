@@ -10,6 +10,7 @@ import com.niton.media.filesystem.NFile;
 import com.niton.media.json.JsonSerializer;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.types.JsonSerialObject;
+import com.niton.media.json.types.advanced.AdaptiveJsonValue;
 
 /**
  * This is the JsonOutputStream Class
@@ -32,18 +33,7 @@ public class JsonOutputStream extends OutputStream {
 		out.write(arg0);
 	}
 	public <T> void write(T o) throws InstantiationException, IllegalAccessException, UnsupportedEncodingException, IOException {
-		Class<? extends JsonValue<?>> type = JsonSerializer.getJsonFor(o.getClass());
-		if(type != null) {
-			@SuppressWarnings("unchecked")
-			JsonValue<T> pure = (JsonValue<T>) type.newInstance();
-			pure.setValue(o);
-			write(pure);
-		}
-		else{
-			JsonSerialObject jso = new JsonSerialObject();
-			jso.setValue(o);
-			write(jso);
-		}
+		out.write(new AdaptiveJsonValue(o).getJson().getBytes("UTF-8"));
 	}
 	public void write(JsonValue<?> json) throws UnsupportedEncodingException, IOException {
 		out.write(json.getJson().getBytes("UTF-8"));

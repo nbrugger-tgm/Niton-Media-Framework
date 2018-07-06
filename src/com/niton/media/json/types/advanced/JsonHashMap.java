@@ -43,15 +43,15 @@ public class JsonHashMap<K,V> extends JsonValue<HashMap<K,V>> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean readNext(StringInputStream sis) throws IOException {
+	public void readNext(StringInputStream sis) throws IOException {
 		JsonSerialArray<HashPair> list = new JsonSerialArray<>();
+		list.setToRead(Object.class);
 		list.readNext(sis);
 		setValue(new HashMap<>());
-		for(Object p : list.getValue()) {
+		for(Object p : JsonSerialArray.getArray(list.getValue())) {
 			HashPair pair = (HashPair) p;
 			getValue().put((K)pair.getKey(), (V) pair.getValue());
 		}
-		return true;
 	}
 }
 

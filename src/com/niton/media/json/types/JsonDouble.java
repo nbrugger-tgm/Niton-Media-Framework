@@ -1,5 +1,7 @@
 package com.niton.media.json.types;
 
+import java.io.IOException;
+
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.StringInputStream;
 
@@ -33,14 +35,14 @@ public class JsonDouble extends JsonValue<Double> {
 	}
 
 	/**
+	 * @throws IOException 
 	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
 	@Override
-	public boolean readNext(StringInputStream sis) {
+	public void readNext(StringInputStream sis) throws IOException {
 		JsonLong s = new JsonLong();
-		boolean c = s.readNext(sis);
+		s.readNext(sis);
 		setValue(Double.longBitsToDouble(s.getValue().longValue()));
-		return c;
 	}
 }
 

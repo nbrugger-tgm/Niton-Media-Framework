@@ -1,15 +1,11 @@
 package com.unity.test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Random;
 
 import com.niton.media.State;
-import com.niton.media.audio.AudioQuality;
 import com.niton.media.audio.nio.basic.PlayState;
 import com.niton.media.crypt.Cluster;
-import com.niton.media.filesystem.NFile;
 import com.niton.media.json.basic.JsonObject;
 import com.niton.media.json.basic.JsonString;
 
@@ -25,7 +21,7 @@ public class ExtremeTest {
 	private int[] array = {
 			1,2,4
 	};
-	private Cluster c = new Cluster(3, (byte) 3);
+	private Cluster c = new Cluster(1, (byte) 3);
 	private ArrayList<State> list  = new ArrayList<>();
 	private PlayState[] states = {
 			PlayState.FINISHED,
@@ -40,9 +36,15 @@ public class ExtremeTest {
 			new B(),
 			new A(),
 			new JsonObject(),
-			java.lang.Thread.State.BLOCKED
+			java.lang.Thread.State.BLOCKED,
+			null
+			,
+			true
 	};
 	private ArrayList<Object> allArrayList = new ArrayList<>();
+	private JsonA jsa = new JsonA(new A());
+	private Object o =  new Object();
+	private Object xyz;
 	
 	/**
 	 * Creates an Instance of ExtremeTest.java
@@ -50,13 +52,14 @@ public class ExtremeTest {
 	 * @version 2018-06-09
 	 */
 	public ExtremeTest(String xxx) {
-		list.add(State.NOT_RUNNING);
-		list.add(State.PAUSED);
-		testMap.put("nils", "brugger");
-		testMap.put("anna", "hickel");
-		allArrayList.add(new JsonString("abcdefString"));
-		allArrayList.add(new A());
-		allArrayList.add(new B());
+//		list.add(State.NOT_RUNNING);
+//		list.add(State.PAUSED);
+//		testMap.put("nils", "brugger");
+//		testMap.put("anna", "hickel");
+//		allArrayList.add(new JsonString("abcdefString"));
+//		allArrayList.add(new A());
+//		allArrayList.add(new B());
+//		allArrayList.add(new Object());
 	}
 }
 

@@ -52,10 +52,9 @@ public class JsonPair<T extends JsonValue<?>> extends JsonValue<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean readNext(StringInputStream sis) throws IOException {
-		boolean succ = true;
+	public void readNext(StringInputStream sis) throws IOException {
 		JsonString s = new JsonString();
-		succ = succ && s.readNext(sis);
+		s.readNext(sis);
 		setName(s.getValue());
 		while(sis.hasNext()) {
 			if(sis.readChar() == ':')
@@ -64,7 +63,6 @@ public class JsonPair<T extends JsonValue<?>> extends JsonValue<T> {
 		JsonInputStream jsin = new JsonInputStream(sis);
 		T t = (T) jsin.readNextJson();
 		setValue(t);
-		return succ;
 	}
 }
 

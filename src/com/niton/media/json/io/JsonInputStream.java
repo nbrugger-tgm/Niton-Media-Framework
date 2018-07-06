@@ -11,6 +11,7 @@ import com.niton.media.json.basic.JsonArray;
 import com.niton.media.json.basic.JsonObject;
 import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
+import com.niton.media.json.types.advanced.AdaptiveJsonValue;
 
 /**
  * This is the JsonInputStream Class
@@ -31,11 +32,11 @@ public class JsonInputStream {
 	public JsonInputStream(NFile source) throws UnsupportedEncodingException, FileNotFoundException {
 		this(new StringInputStream(source));
 	}
-	public JsonString readNextString(StringInputStream text) throws IOException {
+	public JsonString readNextString() throws IOException {
 		JsonString object = new JsonString();
-		while(text.hasNext()) 
-			if(text.readChar() == JsonType.STRING.getOpenToken()) {
-				object.readNext(text);
+		while(sis.hasNext()) 
+			if(sis.readChar() == JsonType.STRING.getOpenToken()) {
+				object.readNext(sis);
 				break;
 			}
 		return object;
@@ -53,7 +54,7 @@ public class JsonInputStream {
 		return array;
 	}
 
-	public JsonObject readNextObject() throws IOException {
+	public JsonObject readNextJsonObject() throws IOException {
 		JsonObject object = new JsonObject();
 		while(sis.hasNext()) 
 			if(sis.readChar() == JsonType.OBJECT.getOpenToken()) {
@@ -88,8 +89,17 @@ public class JsonInputStream {
 		return val;
 	}
 	
-	public <T extends JsonValue<?>> T readNextJson(Class<T> val){
-		return null;
+	public Object readNextObject() throws IOException{
+		wk:while (sis.hasNext()) {
+			char c = sis.readChar();
+			for(JsonType type : JsonType.values())
+				if(type.getOpenToken() == c) {
+					break wk;
+				}
+		}
+		AdaptiveJsonValue ajv = new AdaptiveJsonValue();
+		ajv.readNext(sis);
+		return ajv.getValue();
 		
 	}
 	public void close() throws IOException {
