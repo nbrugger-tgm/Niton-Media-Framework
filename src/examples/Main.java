@@ -49,39 +49,8 @@ import javazoom.jl.decoder.JavaLayerException;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		testJson();
 	}
 
-	/**
-	 * Description :
-	 * 
-	 * @author Nils
-	 * @version 2018-06-09
-	 * @throws JavaLayerException
-	 * @throws InvocationTargetException
-	 * @throws InstantiationException
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IllegalAccessException
-	 * @throws IOException
-	 * @throws CloneNotSupportedException
-	 */
-	@SuppressWarnings("unchecked")
-	private static void testJson()
-			throws JavaLayerException, NoSuchMethodException, SecurityException, InstantiationException,
-			InvocationTargetException, IllegalAccessException, IOException, CloneNotSupportedException {
-		JsonOutputStream jout = new JsonOutputStream(System.out);
-		System.out.println("Serializing : ");
-		ExtremeTest test = new ExtremeTest("ccc");
-		jout.write(test);
-		
-		System.out.println("Deserialize : ");
-		String serial = new AdaptiveJsonValue(test).getJson();
-		JsonInputStream jis = new JsonInputStream(new StringInputStream(serial));
-		Object c = jis.readNextObject();
-		jout.write(c);
-		
-	}
 
 	/**
 	 * Description :

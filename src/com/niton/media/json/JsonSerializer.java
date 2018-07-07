@@ -19,8 +19,6 @@ import com.niton.media.json.types.JsonShort;
 import com.niton.media.json.types.advanced.JsonArrayList;
 import com.niton.media.json.types.advanced.JsonHashMap;
 
-import examples.JsonA;
-import examples.json.A;
 
 /**
  * This is the JsonSerializer Class
@@ -42,7 +40,6 @@ public class JsonSerializer {
 		registerJsonType(Float.class, JsonFloat.class);
 		registerJsonType(Double.class, JsonDouble.class);
 		
-		registerJsonType(A.class, JsonA.class);
 		registerJsonType(ArrayList.class, (Class<? extends JsonValue<?>>) JsonArrayList.class);
 		registerJsonType(HashMap.class, (Class<? extends JsonValue<?>>) JsonHashMap.class);
 	}
