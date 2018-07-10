@@ -275,7 +275,7 @@ public class Directory {
 		return back;
 	}
 
-	public Directory addDir(String name) throws IOException {
+	public Directory addDir(String name) {
 		Directory back = new Directory(this, name);
 		return back;
 	}
