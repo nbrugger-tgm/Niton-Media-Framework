@@ -6,7 +6,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
 import com.niton.media.filesystem.NFile;
+import com.niton.media.json.basic.JsonArray;
 import com.niton.media.json.basic.JsonObject;
+import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.JsonOutputStream;
 import com.niton.media.json.types.JsonInt;
@@ -33,9 +35,6 @@ public class WritingJson {
 		 * -A Server
 		 */
 		
-		// Into String
-		String output = toWrite.getJson();
-		
 		//The Console
 		JsonOutputStream jos = new JsonOutputStream(System.out);
 		try {
@@ -45,25 +44,13 @@ public class WritingJson {
 			e.printStackTrace();
 		}
 		
-		/*
-		 * RESULT:
-			{
-				"gender" : "MALE",
-				"name" : "Nils",
-				"age" : "16"
-			}
-		 */
-		
-		
-		
-		
 		//An File
 		try {
 		NFile target = new NFile("D:","Desktop","me.json");
 			//way 1
 			target.write(toWrite);
 			//way 2
-			JsonOutputStream jos2 = new JsonOutputStream(target);
+			JsonOutputStream jos2 = new JsonOutputStream(target.getOutputStream());
 			jos2.write(toWrite);
 			//I hope i dont need to explain way there are exceptions if you are playing with files
 		} catch (FileNotFoundException e) {
@@ -74,18 +61,7 @@ public class WritingJson {
 			e.printStackTrace();
 		}
 		
-		//The Server
-		try {
-			Socket s = new Socket("localhost", 123);
-			JsonOutputStream jos3 = new JsonOutputStream(s.getOutputStream());
-			jos3.write(toWrite);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
-		/*
-		 * Now You know how to make A Json out Of your Datas
-		 */
 	}
 	
 	
@@ -94,6 +70,13 @@ public class WritingJson {
 		me.add("name", "Nils");
 		me.add("age", new JsonInt(16));
 		me.add("gender", Gender.MALE);
+		JsonArray<JsonString> languages = new JsonArray<>();
+		languages.add(new JsonString("Java"));
+		languages.add(new JsonString("German"));
+		languages.add(new JsonString("Java Script"));
+		languages.add(new JsonString("English"));
+		
+		me.add("languages", languages);
 		return me;
 	}
 }
