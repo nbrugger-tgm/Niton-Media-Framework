@@ -3,6 +3,8 @@ package com.niton.media.streaming;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
+
 public class CounterInputStream extends InputStream {
 	private InputStream out;
 	private long mass;
@@ -21,4 +23,14 @@ public class CounterInputStream extends InputStream {
 		mass++;
 		return out.read();
 	}
+	
+	/**
+	 * @see java.io.InputStream#close()
+	 */
+	@Override
+	public void close() throws IOException {
+		out.close();
+		super.close();
+	}
+
 }

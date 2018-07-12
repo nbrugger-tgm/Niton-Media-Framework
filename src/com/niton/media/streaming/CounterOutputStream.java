@@ -20,4 +20,21 @@ public class CounterOutputStream extends OutputStream {
 	public long getSendBytes() {
 		return mass;
 	}
+	
+	/**
+	 * @see java.io.OutputStream#close()
+	 */
+	@Override
+	public void close() throws IOException {
+		out.close();
+		super.close();
+	}
+	/**
+	 * @see java.io.OutputStream#flush()
+	 */
+	@Override
+	public void flush() throws IOException {
+		out.flush();
+		super.flush();
+	}
 }

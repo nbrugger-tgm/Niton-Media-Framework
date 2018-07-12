@@ -19,6 +19,7 @@ import com.niton.media.json.types.advanced.AdaptiveJsonValue;
  */
 public class JsonOutputStream extends OutputStream {
 	private OutputStream out;
+
 	public JsonOutputStream(OutputStream output) {
 		this.out = output;
 	}
@@ -34,9 +35,27 @@ public class JsonOutputStream extends OutputStream {
 	}
 	public <T> void write(T o) throws InstantiationException, IllegalAccessException, UnsupportedEncodingException, IOException {
 		out.write(new AdaptiveJsonValue(o).getJson().getBytes("UTF-8"));
+		flush();
 	}
 	public void write(JsonValue<?> json) throws UnsupportedEncodingException, IOException {
 		out.write(json.getJson().getBytes("UTF-8"));
+		flush();
+	}
+	/**
+	 * @see java.io.OutputStream#close()
+	 */
+	@Override
+	public void close() throws IOException {
+		out.close();
+		super.close();
+	}
+	/**
+	 * @see java.io.OutputStream#flush()
+	 */
+	@Override
+	public void flush() throws IOException {
+		out.flush();
+		super.flush();
 	}
 }
 
