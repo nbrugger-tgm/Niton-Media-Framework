@@ -281,7 +281,7 @@ public class NFile {
 	}
 
 	public String getAbsolutePath() {
-		return getAbsolutePath();
+		return getPathAsString();
 	}
 
 	public void write(Serializable data) throws IOException {
