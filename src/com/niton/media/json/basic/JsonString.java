@@ -90,15 +90,15 @@ public class JsonString extends JsonValue<String> {
 			if (escape) {
 				if (c == '\\' || c == '\"' || c == '/')
 					builder.append(c);
-				if (c == 'b')
+				else if (c == 'b')
 					builder.append('\b');
-				if (c == 'f')
+				else if (c == 'f')
 					builder.append('\f');
-				if (c == 'n')
+				else if (c == 'n')
 					builder.append('\n');
-				if (c == 'r')
+				else if (c == 'r')
 					builder.append('\r');
-				if (c == 't')
+				else if (c == 't')
 					builder.append('\t');
 				else
 					throw new JsonEscapeException(c+"", true);
