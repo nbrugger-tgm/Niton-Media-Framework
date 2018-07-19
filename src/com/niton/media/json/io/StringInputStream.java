@@ -27,11 +27,9 @@ public class StringInputStream {
 	private Reader input;
 	private int puffer = -2;
 	private StringInputStream pre, after;
-	private String debugIn,debugout="";
 
 	public StringInputStream(String wholeData) {
 		this(new ByteArrayInputStream(wholeData.getBytes(chars)));
-		debugIn = wholeData;
 	}
 
 	public StringInputStream(InputStream stream) {
@@ -46,7 +44,6 @@ public class StringInputStream {
 		if (pre != null) {
 			if (pre.hasNext()) {
 				char c = pre.readChar();
-				debugout += c;
 				return c;
 			}else
 				pre = null;
@@ -55,7 +52,6 @@ public class StringInputStream {
 		if (puffer != -2) {
 			char c = (char) puffer;
 			puffer = -2;
-			debugout += c;
 			return c;
 		} else {
 			puffer = input.read();
@@ -64,7 +60,6 @@ public class StringInputStream {
 			if (after != null)
 				if(after.hasNext()) {
 					char c =  after.readChar();
-					debugout += c;
 					return c;
 				}else
 					after = null;
@@ -73,7 +68,6 @@ public class StringInputStream {
 		}
 		char c = (char) puffer;
 		puffer = -2;
-		debugout += c;
 		return c;
 	}
 
