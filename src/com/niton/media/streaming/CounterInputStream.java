@@ -32,5 +32,11 @@ public class CounterInputStream extends InputStream {
 		out.close();
 		super.close();
 	}
+	/**
+	 * @return the out
+	 */
+	public InputStream getSource() {
+		return out;
+	}
 
 }

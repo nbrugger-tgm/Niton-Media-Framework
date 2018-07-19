@@ -37,4 +37,10 @@ public class CounterOutputStream extends OutputStream {
 		out.flush();
 		super.flush();
 	}
+	/**
+	 * @return the out
+	 */
+	public OutputStream getTarget() {
+		return out;
+	}
 }
