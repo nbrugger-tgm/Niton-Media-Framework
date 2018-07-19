@@ -105,5 +105,15 @@ public class JsonInputStream {
 	public void close() throws IOException {
 		sis.close();
 	}
+	
+	/**
+	 * @return the sis
+	 */
+	public StringInputStream getSource() {
+		return sis;
+	}
+	public boolean hasNext() throws IOException {
+		return sis.hasNext();
+	}
 }
 

@@ -26,7 +26,12 @@ public class JsonOutputStream extends OutputStream {
 	public JsonOutputStream(NFile target) throws FileNotFoundException {
 		out = new BufferedOutputStream(target.getOutputStream());
 	}
+	
+	@Deprecated
 	public OutputStream getOut() {
+		return out;
+	}
+	public OutputStream getTarget() {
 		return out;
 	}
 	@Override
