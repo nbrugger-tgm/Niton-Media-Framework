@@ -157,6 +157,13 @@ public class Directory {
 		return getSubFiles(this);
 	}
 
+	/**
+	 * Description : Returns all children which are direct in the Folder<br>
+	 * It is <i><b>not</b></i> recursive!
+	 * @author Nils Brugger
+	 * @version 2018-07-20
+	 * @return the children files and directories
+	 */
 	public ArrayList<Path> getChildren() {
 		ArrayList<Path> back = new ArrayList<Path>();
 		for (File file : this.getPath().toFile().listFiles()) {
@@ -289,6 +296,25 @@ public class Directory {
 		NFile back = new NFile(this, name);
 		return back;
 	}
+	/**
+	 * Changes the location of the folder in the file system.<br>
+	 * The new location is the folder it will be afterwards.<br>
+	 * <b>Example:</b>
+	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
+	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * <pre>
+	 * {@link Directory} toMove = new {@link Directory}("D:\A");
+	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
+	 * {@link Directory} folderAfter = targetFolder.addDir("A");
+	 * toMove.move(folderAfter);
+	 * </pre>
+	 * this metthod uses recursion.<br>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * @author Nils
+	 * @version 2018-07-20
+	 * @param newLocation the new loccation of the folder its self
+	 * @throws IOException 
+	 */
 	public void move(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
@@ -302,6 +328,26 @@ public class Directory {
 			}
 		}
 	}
+	
+	/**
+	 * Changes the location of the folder in the file system. And overrides the newLocation if necessary (possible loss of data)<br>
+	 * The new location is the folder it will be afterwards.<br>
+	 * <b>Example:</b>
+	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
+	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * <pre>
+	 * {@link Directory} toMove = new {@link Directory}("D:\A");
+	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
+	 * {@link Directory} folderAfter = targetFolder.addDir("A");
+	 * toMove.move(folderAfter);
+	 * </pre>
+	 * this metthod uses recursion.<br>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * @author Nils
+	 * @version 2018-07-20
+	 * @param newLocation the new loccation of the folder its self
+	 * @throws IOException 
+	 */
 	public void moveReplace(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
@@ -316,6 +362,26 @@ public class Directory {
 		}
 	}
 
+	
+	/**
+	 * Copies the folder in the file system.<br>
+	 * The new location is the folder it will be afterwards.<br>
+	 * <b>Example:</b>
+	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
+	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * <pre>
+	 * {@link Directory} toCopy = new {@link Directory}("D:\A");
+	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
+	 * {@link Directory} folderAfter = targetFolder.addDir("A");
+	 * toMove.copy(folderAfter);
+	 * </pre>
+	 * this metthod uses recursion.<br>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * @author Nils
+	 * @version 2018-07-20
+	 * @param newLocation a new loccation of a copy from folder its self
+	 * @throws IOException 
+	 */
 	public void copy(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
@@ -329,6 +395,26 @@ public class Directory {
 			}
 		}
 	}
+	
+	/**
+	 * Changes the location of the folder in the file system. And overrides the newLocation if necessary (possible loss of data)<br>
+	 * The new location is the folder it will be afterwards.<br>
+	 * <b>Example:</b>
+	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
+	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * <pre>
+	 * {@link Directory} toMove = new {@link Directory}("D:\A");
+	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
+	 * {@link Directory} folderAfter = targetFolder.addDir("A");
+	 * toMove.move(folderAfter);
+	 * </pre>
+	 * this metthod uses recursion.<br>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * @author Nils
+	 * @version 2018-07-20
+	 * @param newLocation a new loccation of the copy from folder its self
+	 * @throws IOException 
+	 */
 	public void copyReplace(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
@@ -342,6 +428,7 @@ public class Directory {
 			}
 		}
 	}
+	
 	/**
 	 * <b><i>RECURSIVE</i></b>
 	 * @author Niton
