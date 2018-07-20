@@ -4,6 +4,24 @@
   "url": "https://github.com/nbrugger-tgm/Niton-Media-Framework/",
   "image": "https://github.com/nbrugger-tgm/Niton-Media-Framework/raw/master/media%20api.png",
   "specificationVersion": "0.14",
+  "apis": [
+    {
+      "name": "Jsonia",
+      "description": "Newest version",
+      "image": "https://github.com/nbrugger-tgm/Niton-Media-Framework/raw/master/media%20api.png",
+      "baseURL": "https://github.com/nbrugger-tgm/Niton-Media-Framework/",
+      "humanURL": "https://github.com/nbrugger-tgm/Niton-Media-Framework/",
+      "properties": [],
+      "contact": [
+        {
+          "FN": "Nils Brugger",
+          "email": "nbrugger@student.tgm.ac.at",
+          "organizationName": "TGM",
+          "X-github": "https://github.com/nbrugger-tgm/"
+        }
+      ]
+    }
+  ],
   "maintainers": [
     {
       "FN": "Nils Brugger",
