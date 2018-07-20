@@ -284,6 +284,11 @@ public class Directory {
 		NFile back = new NFile(this, name, ending);
 		return back;
 	}
+	
+	public NFile addFile(String name) {
+		NFile back = new NFile(this, name);
+		return back;
+	}
 
 	/**
 	 * <b><i>RECURSIVE</i></b>
