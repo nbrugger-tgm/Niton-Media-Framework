@@ -316,6 +316,32 @@ public class Directory {
 		}
 	}
 
+	public void copy(Directory newLocation) throws IOException {
+		newLocation.save();
+		ArrayList<Path> childs = getChildren();
+		for (Path path : childs) {
+			if(Files.isDirectory(path)) {
+				Directory d = new Directory(file);
+				d.copy(newLocation.addDir(d.getName()));
+			}else {
+				NFile file = new NFile(path);
+				file.copy(newLocation.addFile(file.getName()+"."+file.getEnding()));
+			}
+		}
+	}
+	public void copyReplace(Directory newLocation) throws IOException {
+		newLocation.save();
+		ArrayList<Path> childs = getChildren();
+		for (Path path : childs) {
+			if(Files.isDirectory(path)) {
+				Directory d = new Directory(file);
+				d.copyReplace(newLocation.addDir(d.getName()));
+			}else {
+				NFile file = new NFile(path);
+				file.copyReplace(newLocation.addFile(file.getName(),file.getEnding()));
+			}
+		}
+	}
 	/**
 	 * <b><i>RECURSIVE</i></b>
 	 * @author Niton
