@@ -420,7 +420,7 @@ public class Directory {
 		ArrayList<Path> childs = getChildren();
 		for (Path path : childs) {
 			if(Files.isDirectory(path)) {
-				Directory d = new Directory(file);
+				Directory d = new Directory(path);
 				d.copyReplace(newLocation.addDir(d.getName()));
 			}else {
 				NFile file = new NFile(path);
