@@ -30,6 +30,7 @@ import com.niton.media.crypt.Cluster;
 import com.niton.media.crypt.ClusterCryptedInputStream;
 import com.niton.media.crypt.ClusterCryptedOutputStream;
 import com.niton.media.filesystem.DataStore;
+import com.niton.media.filesystem.Directory;
 import com.niton.media.filesystem.NFile;
 import com.niton.media.json.basic.JsonArray;
 import com.niton.media.json.basic.JsonObject;
@@ -49,6 +50,22 @@ import javazoom.jl.decoder.JavaLayerException;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
+		testFolderCopy();
+	}
+
+
+	/**
+	 * Description : 
+	 * @author Nils
+	 * @version 2018-07-20
+	 * @throws IOException 
+	 */
+	private static void testFolderCopy() throws IOException {
+		Directory d = new Directory("D:\\Desktop\\Restaurant Manager");
+		Directory target = new Directory("D:\\Desktop\\backup");
+//		Directory todel = target.addDir("backup");
+//		todel.delete();
+		d.copyReplace(target);
 	}
 
 
