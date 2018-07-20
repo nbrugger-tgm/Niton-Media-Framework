@@ -289,6 +289,32 @@ public class Directory {
 		NFile back = new NFile(this, name);
 		return back;
 	}
+	public void move(Directory newLocation) throws IOException {
+		newLocation.save();
+		ArrayList<Path> childs = getChildren();
+		for (Path path : childs) {
+			if(Files.isDirectory(path)) {
+				Directory d = new Directory(file);
+				d.move(newLocation.addDir(d.getName()));
+			}else {
+				NFile file = new NFile(path);
+				file.move(newLocation.addFile(file.getName()+"."+file.getEnding()));
+			}
+		}
+	}
+	public void moveReplace(Directory newLocation) throws IOException {
+		newLocation.save();
+		ArrayList<Path> childs = getChildren();
+		for (Path path : childs) {
+			if(Files.isDirectory(path)) {
+				Directory d = new Directory(file);
+				d.moveReplace(newLocation.addDir(d.getName()));
+			}else {
+				NFile file = new NFile(path);
+				file.moveReplace(newLocation.addFile(file.getName(),file.getEnding()));
+			}
+		}
+	}
 
 	/**
 	 * <b><i>RECURSIVE</i></b>
