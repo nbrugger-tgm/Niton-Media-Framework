@@ -1,0 +1,29 @@
+{
+  "name": "Media API",
+  "description": "Nitons Media API is an very big and high level Java API It provides it provides many Classes utilitys to do I/O operations. The API also includes many 3rd Party APIs like JCodec, JSoup and the Java Zoom MP3 Parser. But we dont simply importet them, we also made them easy to use and make some abstract classes to use it in a simple way and added some really cool features. But the main content is completely self created.",
+  "url": "https://github.com/nbrugger-tgm/Niton-Media-Framework/",
+  "image": "https://github.com/nbrugger-tgm/Niton-Media-Framework/raw/master/media%20api.png",
+  "specificationVersion": "0.14",
+  "maintainers": [
+    {
+      "FN": "Nils Brugger",
+      "email": "nbrugger@student.tgm.ac.at",
+      "organizationName": "TGM",
+      "X-github": "https://github.com/nbrugger-tgm/"
+    }
+  ],
+  "tags": [
+    "Java",
+    "Json",
+    "Media",
+    "High Level",
+    "Encryption",
+    "File",
+    "Directory",
+    "Folder",
+    "advanced"
+  ],
+  "include": [],
+  "created": "2018-07-20",
+  "modified": "2018-07-20"
+}
