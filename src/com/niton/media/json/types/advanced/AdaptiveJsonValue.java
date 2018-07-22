@@ -82,6 +82,7 @@ public class AdaptiveJsonValue extends JsonValue<Object> {
 	/**
 	 * @see com.niton.media.json.basic.JsonValue#readNext(com.niton.media.json.io.StringInputStream)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void readNext(StringInputStream sis) throws IOException {
 		JsonString string = new JsonString();
@@ -117,6 +118,7 @@ public class AdaptiveJsonValue extends JsonValue<Object> {
 		}
 		if (toParse.isEnum()) {
 			JsonEnum jenum = new JsonEnum();
+			jenum.setToRead((Class<? extends Enum<?>>) toParse);
 			jenum.readNext(sis);
 			setValue(jenum.getValue());
 		} else if (toParse.isArray()) {

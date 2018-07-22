@@ -3,6 +3,7 @@ package com.niton.media.json.types;
 import java.io.IOException;
 
 import com.niton.media.json.basic.JsonObject;
+import com.niton.media.json.basic.JsonString;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.exceptions.JsonParsingException;
 import com.niton.media.json.io.StringInputStream;
@@ -25,10 +26,7 @@ public class JsonEnum extends JsonValue<Enum<?>> {
 	 */
 	@Override
 	public String getJson() {
-		JsonObject obj = new JsonObject();
-		obj.add("class", getValue().getClass().getName());
-		obj.add("name", getValue().name());
-		return obj.getJson();
+		return new JsonString(getValue().name()).getJson();
 	}
 
 	/**
@@ -36,20 +34,19 @@ public class JsonEnum extends JsonValue<Enum<?>> {
 	 */
 	@Override
 	public void readNext(StringInputStream sis) throws IOException {
-		JsonObject obj = new JsonObject();
+		JsonString obj = new JsonString();
 		obj.readNext(sis);
-		try {
-			@SuppressWarnings("unchecked")
-			Class<? extends Enum<?>> enume = (Class<? extends Enum<?>>) Class.forName((String) obj.get("class").getValue());
-			Enum<?>[] consts = enume.getEnumConstants();
-			for (Enum<?> enum1 : consts) {
-				if(enum1.name().equals(obj.get("name").getValue().toString())){
-					setValue(enum1);
-				}
+		Enum<?>[] consts = type.getEnumConstants();
+		for (Enum<?> enum1 : consts) {
+			if(enum1.name().equals(obj.getValue())){
+				setValue(enum1);
+				break;
 			}
-		} catch (ClassNotFoundException e) {
-			throw new JsonParsingException(e);
 		}
+	}
+	Class<? extends Enum<?>> type; 
+	public void setToRead(Class<? extends Enum<?>> toParse) {
+		type = toParse;
 	}
 }
 
