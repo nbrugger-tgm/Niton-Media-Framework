@@ -94,6 +94,10 @@ public class JsonSerialObject extends JsonValue<Object> {
 						|| Modifier.isFinal(f.getModifiers()))
 					continue;
 				JsonValue<?> valueAsPlainJson = obj.get(f.getName());
+				if(valueAsPlainJson == null) {
+					f.set(value, null);
+					continue;
+				}
 				jis = new StringInputStream(valueAsPlainJson.getJson());
 				jis.readChar();
 				AdaptiveJsonValue serialPair = new AdaptiveJsonValue();
