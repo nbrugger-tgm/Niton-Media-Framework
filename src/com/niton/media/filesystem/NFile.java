@@ -81,9 +81,7 @@ public class NFile {
 
 	public String getEnding() {
 		String filename = file.getFileName().toString();
-		filename = filename.replace('.', '>');
-		String[] parts = filename.split(">");
-		return parts[parts.length - 1];
+		return filename.substring(filename.lastIndexOf(".")+1);
 	}
 
 	public String getText() throws IOException {
