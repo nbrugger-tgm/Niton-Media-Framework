@@ -1,12 +1,12 @@
 package com.niton.media.filesystem;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
 
 /**
  * This is the Directory Class Representing a container of Files and other
@@ -19,12 +19,11 @@ public class Directory {
 	private Path file;
 
 	/**
-	 * Creates an Direectory with a specific path 
+	 * Creates an Direectory with a specific path
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
-	 * @param path
-	 *            the path to the Directory
+	 * @param path the path to the Directory
 	 */
 	public Directory(String path) {
 		this.file = Paths.get(path);
@@ -35,8 +34,7 @@ public class Directory {
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
-	 * @param path
-	 *            the path to the Directory
+	 * @param path the path to the Directory
 	 */
 	public Directory(Path path) {
 		file = path;
@@ -47,8 +45,7 @@ public class Directory {
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
-	 * @param path
-	 *            the old file object to loacate the File
+	 * @param path the old file object to loacate the File
 	 */
 	public Directory(File path) {
 		file = path.toPath();
@@ -60,10 +57,8 @@ public class Directory {
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
-	 * @param dir
-	 *            the parent Directory of this Directory
-	 * @param fullName
-	 *            the name of the Directory
+	 * @param dir      the parent Directory of this Directory
+	 * @param fullName the name of the Directory
 	 */
 	public Directory(Directory dir, String fullName) {
 		this.file = Paths.get(dir.getPathAsString(), fullName);
@@ -75,10 +70,8 @@ public class Directory {
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
-	 * @param dir
-	 *            the parent Directory of this Directory
-	 * @param path
-	 *            the following directories to create the path
+	 * @param dir  the parent Directory of this Directory
+	 * @param path the following directories to create the path
 	 */
 	public Directory(Directory dir, String... paths) {
 		String slash = System.getProperty("file.separator");
@@ -89,9 +82,20 @@ public class Directory {
 		file = Paths.get(path);
 		this.file = Paths.get(dir.getPathAsString(), path);
 	}
+
+	
+	public Directory(String... paths) {
+		String slash = System.getProperty("file.separator");
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < paths.length; i++) {
+			builder.append(paths[i] + (i + 1 < paths.length ? slash : ""));
+		}
+		file = Paths.get(builder.toString());
+	}
 	
 	/**
 	 * Returns the java NIO Path object used as base for NFile
+	 * 
 	 * @author Nils
 	 * @version 2018-06-30
 	 * @return the NIO Path
@@ -100,8 +104,6 @@ public class Directory {
 		return file;
 	}
 
-	
-	
 	/**
 	 * Description : Returns the absolute Path to the Directory on your computer
 	 * 
@@ -111,6 +113,17 @@ public class Directory {
 	 */
 	public String getPathAsString() {
 		return file.toString();
+	}
+
+	/**
+	 * Description : Returns the absolute Path to the Directory on your computer
+	 * 
+	 * @author Nils
+	 * @version 2017-08-28
+	 * @return the absolute Path
+	 */
+	public String getAbsolutePath() {
+		return file.toAbsolutePath().toString();
 	}
 
 	public Directory getParent() {
@@ -126,12 +139,16 @@ public class Directory {
 	 * @version 2017-08-28
 	 * @return the root Directory of the Dir
 	 */
-	public Path getRoot() {
-		return file.getRoot();
+	public Directory getRoot() {
+		return new Directory(file.getRoot());
 	}
 
 	/**
-	 * Example: <i>\home\niton\Schreibtisch\Dir</i> -> 3
+	 * Example: <i>\home\niton\Schreibtisch\Dir</i> -> 3<br>
+	 * 
+	 * <pre>
+	 *          0   1      2   3
+	 * </pre>
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
@@ -146,8 +163,8 @@ public class Directory {
 	}
 
 	/**
-	 * <b><i>RECURSIVE</i></b> searches and returns all sub sub and sub sub
-	 * Files and Folders
+	 * <b><i>RECURSIVE</i></b><br>
+	 * Searches and returns all sub sub and sub sub Files and Folders
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
@@ -160,11 +177,12 @@ public class Directory {
 	/**
 	 * Description : Returns all children which are direct in the Folder<br>
 	 * It is <i><b>not</b></i> recursive!
+	 * 
 	 * @author Nils Brugger
 	 * @version 2018-07-20
 	 * @return the children files and directories
 	 */
-	public ArrayList<Path> getChildren() {
+	public ArrayList<Path> getChildren() throws SecurityException, UnsupportedOperationException {
 		ArrayList<Path> back = new ArrayList<Path>();
 		for (File file : this.getPath().toFile().listFiles()) {
 			back.add(file.toPath());
@@ -177,7 +195,7 @@ public class Directory {
 	 * @version 2018-04-05
 	 * @return all files direct in the folder
 	 */
-	public NFile[] getSubFiles() {
+	public NFile[] getSubFiles() throws SecurityException {
 		File[] files = this.getPath().toFile().listFiles();
 		ArrayList<NFile> list = new ArrayList<NFile>();
 		for (File file : files) {
@@ -211,7 +229,7 @@ public class Directory {
 	 * @version 2017-08-28
 	 * @return all dirs in this
 	 */
-	public ArrayList<Directory> getSubFolder() {
+	public ArrayList<Directory> getSubFolder() throws SecurityException {
 		ArrayList<Directory> list = new ArrayList<Directory>();
 		for (File f : file.toFile().listFiles()) {
 			if (f.isDirectory())
@@ -226,19 +244,14 @@ public class Directory {
 	 * @author Nils
 	 * @version 2017-08-28
 	 * @return true on success
+	 * @throws IOException
 	 */
-	public boolean save() {
-		try {
-			Files.createDirectories(file);
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public void save() throws IOException {
+		Files.createDirectories(file);
 	}
 
 	/**
-	 * Removes all Files in it <b>RECURSIVLY</b>
+	 * Removes all Files in it <i><b>RECURSIVLY</b></i>
 	 * 
 	 * @author Nils
 	 * @version 2017-08-28
@@ -254,25 +267,15 @@ public class Directory {
 		Files.delete(file);
 	}
 
-	public NFile addAndSaveFile(String name, String ending) {
+	public NFile addAndSaveFile(String name, String ending) throws IOException {
 		NFile back = new NFile(this, name, ending);
-		try {
-			back.save();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		back.save();
 		return back;
 	}
 
-	public NFile addAndSaveFile(String name) {
+	public NFile addAndSaveFile(String name) throws IOException {
 		NFile back = new NFile(this, name);
-		try {
-			back.save();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		back.save();
 		return back;
 	}
 
@@ -291,146 +294,168 @@ public class Directory {
 		NFile back = new NFile(this, name, ending);
 		return back;
 	}
-	
+
 	public NFile addFile(String name) {
 		NFile back = new NFile(this, name);
 		return back;
 	}
+
 	/**
 	 * Changes the location of the folder in the file system.<br>
 	 * The new location is the folder it will be afterwards.<br>
-	 * <b>Example:</b>
-	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
-	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * <b>Example:</b> You are about to move the folder <code>D:\A</code> into the
+	 * folder <code>D:\B</code><br>
+	 * The new path to the folder A will be <code>D:\B\A</code>
+	 * 
 	 * <pre>
 	 * {@link Directory} toMove = new {@link Directory}("D:\A");
 	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
 	 * {@link Directory} folderAfter = targetFolder.addDir("A");
 	 * toMove.move(folderAfter);
 	 * </pre>
+	 * 
 	 * this metthod uses recursion.<br>
-	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT
+	 * TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A
+	 * {@link StackOverflowError}</i></b>
+	 * 
 	 * @author Nils
 	 * @version 2018-07-20
 	 * @param newLocation the new loccation of the folder its self
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void move(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
 		for (Path path : childs) {
-			if(Files.isDirectory(path)) {
+			if (Files.isDirectory(path)) {
 				Directory d = new Directory(file);
 				d.move(newLocation.addDir(d.getName()));
-			}else {
+			} else {
 				NFile file = new NFile(path);
-				file.move(newLocation.addFile(file.getName()+"."+file.getEnding()));
+				file.move(newLocation.addFile(file.getName() + "." + file.getEnding()));
 			}
 		}
 	}
-	
+
 	/**
-	 * Changes the location of the folder in the file system. And overrides the newLocation if necessary (possible loss of data)<br>
+	 * Changes the location of the folder in the file system. And overrides the
+	 * newLocation if necessary (possible loss of data)<br>
 	 * The new location is the folder it will be afterwards.<br>
-	 * <b>Example:</b>
-	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
-	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * <b>Example:</b> You are about to move the folder <code>D:\A</code> into the
+	 * folder <code>D:\B</code><br>
+	 * The new path to the folder A will be <code>D:\B\A</code>
+	 * 
 	 * <pre>
 	 * {@link Directory} toMove = new {@link Directory}("D:\A");
 	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
 	 * {@link Directory} folderAfter = targetFolder.addDir("A");
 	 * toMove.move(folderAfter);
 	 * </pre>
+	 * 
 	 * this metthod uses recursion.<br>
-	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT
+	 * TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A
+	 * {@link StackOverflowError}</i></b>
+	 * 
 	 * @author Nils
 	 * @version 2018-07-20
 	 * @param newLocation the new loccation of the folder its self
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void moveReplace(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
 		for (Path path : childs) {
-			if(Files.isDirectory(path)) {
+			if (Files.isDirectory(path)) {
 				Directory d = new Directory(file);
 				d.moveReplace(newLocation.addDir(d.getName()));
-			}else {
+			} else {
 				NFile file = new NFile(path);
-				file.moveReplace(newLocation.addFile(file.getName(),file.getEnding()));
+				file.moveReplace(newLocation.addFile(file.getName(), file.getEnding()));
 			}
 		}
 	}
 
-	
 	/**
 	 * Copies the folder in the file system.<br>
 	 * The new location is the folder it will be afterwards.<br>
-	 * <b>Example:</b>
-	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
+	 * <b>Example:</b> You are about to move the folder <code>D:\A</code> into the
+	 * folder <code>D:\B</code><br>
 	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * 
 	 * <pre>
 	 * {@link Directory} toCopy = new {@link Directory}("D:\A");
 	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
 	 * {@link Directory} folderAfter = targetFolder.addDir("A");
 	 * toMove.copy(folderAfter);
 	 * </pre>
+	 * 
 	 * this metthod uses recursion.<br>
-	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT
+	 * TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A
+	 * {@link StackOverflowError}</i></b>
+	 * 
 	 * @author Nils
 	 * @version 2018-07-20
 	 * @param newLocation a new loccation of a copy from folder its self
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void copy(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
 		for (Path path : childs) {
-			if(Files.isDirectory(path)) {
+			if (Files.isDirectory(path)) {
 				Directory d = new Directory(file);
 				d.copy(newLocation.addDir(d.getName()));
-			}else {
+			} else {
 				NFile file = new NFile(path);
-				file.copy(newLocation.addFile(file.getName()+"."+file.getEnding()));
+				file.copy(newLocation.addFile(file.getName() + "." + file.getEnding()));
 			}
 		}
 	}
-	
+
 	/**
-	 * Changes the location of the folder in the file system. And overrides the newLocation if necessary (possible loss of data)<br>
+	 * Copies the folder in the file system.<br>
 	 * The new location is the folder it will be afterwards.<br>
-	 * <b>Example:</b>
-	 * You are about to move the folder <code>D:\A</code> into the folder <code>D:\B</code><br>
+	 * <b>Example:</b> You are about to move the folder <code>D:\A</code> into the
+	 * folder <code>D:\B</code><br>
 	 * The new path to the folder A will be <code>D:\A\B</code>
+	 * 
 	 * <pre>
-	 * {@link Directory} toMove = new {@link Directory}("D:\A");
+	 * {@link Directory} toCopy = new {@link Directory}("D:\A");
 	 * {@link Directory} targetFolder = new {@link Directory}("D:\B");
 	 * {@link Directory} folderAfter = targetFolder.addDir("A");
-	 * toMove.move(folderAfter);
+	 * toMove.copy(folderAfter);
 	 * </pre>
+	 * 
 	 * this metthod uses recursion.<br>
-	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A {@link StackOverflowError}</i></b>
+	 * <b><i>DO NOT USE THIS METHOD IF YOU HAVE A LINK FOLDER IN THE FOLDER YOU WANT
+	 * TO MOVE TO THE FOLDER ITSELF. IT WILL CAUSE A
+	 * {@link StackOverflowError}</i></b>
+	 * 
 	 * @author Nils
 	 * @version 2018-07-20
-	 * @param newLocation a new loccation of the copy from folder its self
-	 * @throws IOException 
+	 * @param newLocation a new loccation of a copy from folder its self
+	 * @throws IOException
 	 */
 	public void copyReplace(Directory newLocation) throws IOException {
 		newLocation.save();
 		ArrayList<Path> childs = getChildren();
 		for (Path path : childs) {
-			if(Files.isDirectory(path)) {
+			if (Files.isDirectory(path)) {
 				Directory d = new Directory(path);
 				d.copyReplace(newLocation.addDir(d.getName()));
-			}else {
+			} else {
 				NFile file = new NFile(path);
-				file.copyReplace(newLocation.addFile(file.getName(),file.getEnding()));
+				file.copyReplace(newLocation.addFile(file.getName(), file.getEnding()));
 			}
 		}
 	}
-	
+
 	/**
 	 * <b><i>RECURSIVE</i></b>
+	 * 
 	 * @author Niton
 	 * @version 2018-04-05
 	 * @param d
@@ -456,7 +481,7 @@ public class Directory {
 		}
 		return back;
 	}
-	
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

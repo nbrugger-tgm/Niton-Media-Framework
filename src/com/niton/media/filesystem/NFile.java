@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileAlreadyExistsException;
@@ -81,7 +83,7 @@ public class NFile {
 
 	public String getEnding() {
 		String filename = file.getFileName().toString();
-		return filename.substring(filename.lastIndexOf(".")+1);
+		return filename.substring(filename.lastIndexOf(".") + 1);
 	}
 
 	public String getText() throws IOException {
@@ -99,7 +101,7 @@ public class NFile {
 	}
 
 	public void save() throws IOException {
-		Files.createDirectories(file.getParent());
+		getParent().save();
 		Files.createFile(getPath());
 	}
 
@@ -122,34 +124,30 @@ public class NFile {
 		target.write(read());
 	}
 
-	public void copyBig(NFile target) {
-		try {
-			FileInputStream is = (FileInputStream) getInputStream();
-			OutputStream stream = target.getOutputStream();
-			FileChannel ch = is.getChannel();
-			ByteBuffer bb = ByteBuffer.allocateDirect(1024 * 1000);
-			byte[] barray = new byte[512 * 1000];
-			int nRead, nGet;
-			short i = 0;
-			while ((nRead = ch.read(bb)) != -1) {
-				i++;
-				if (i == 20) {
-					i = 0;
-					System.gc();
-				}
-				if (nRead == 0)
-					continue;
-				bb.position(0);
-				bb.limit(nRead);
-				while (bb.hasRemaining()) {
-					nGet = Math.min(bb.remaining(), 512 * 1000);
-					bb.get(barray, 0, nGet);
-					stream.write(barray);
-				}
-				bb.clear();
+	public void copyBig(NFile target) throws IOException {
+		FileInputStream is = (FileInputStream) getInputStream();
+		OutputStream stream = target.getOutputStream();
+		FileChannel ch = is.getChannel();
+		ByteBuffer bb = ByteBuffer.allocateDirect(1024 * 1000);
+		byte[] barray = new byte[512 * 1000];
+		int nRead, nGet;
+		short i = 0;
+		while ((nRead = ch.read(bb)) != -1) {
+			i++;
+			if (i == 20) {
+				i = 0;
+				System.gc();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			if (nRead == 0)
+				continue;
+			bb.position(0);
+			bb.limit(nRead);
+			while (bb.hasRemaining()) {
+				nGet = Math.min(bb.remaining(), 512 * 1000);
+				bb.get(barray, 0, nGet);
+				stream.write(barray);
+			}
+			bb.clear();
 		}
 	}
 
@@ -162,7 +160,7 @@ public class NFile {
 	public void move(NFile target) throws IOException {
 		if (target.exisits())
 			throw new FileAlreadyExistsException(
-					"Copy file to existing file impossible! use NFile.moveReplace(NFile) instead");
+					"Move file to existing file impossible! use NFile.moveReplace(NFile) instead");
 		target.save();
 		target.setText(getText());
 		delete();
@@ -174,8 +172,8 @@ public class NFile {
 	 * @author Nils
 	 * @version 2017-08-18
 	 * @return the stream FROM the NFile
-	 * @throws FileNotFoundException
-	 *             if the file is not found you cannot open an Stream
+	 * @throws FileNotFoundException if the file is not found you cannot open an
+	 *                               Stream
 	 */
 	public FileInputStream getInputStream() throws FileNotFoundException {
 		return new FileInputStream(getFile());
@@ -187,8 +185,8 @@ public class NFile {
 	 * @author Nils
 	 * @version 2017-08-18
 	 * @return the stream TO the NFile
-	 * @throws FileNotFoundException
-	 *             if the file is not found you cannot open an Stream
+	 * @throws FileNotFoundException if the file is not found you cannot open an
+	 *                               Stream
 	 */
 	public FileOutputStream getOutputStream() throws FileNotFoundException {
 		return new FileOutputStream(getFile());
@@ -210,12 +208,10 @@ public class NFile {
 	 * 
 	 * @author Nils
 	 * @version 2017-08-18
-	 * @param newName
-	 *            the new Name for the file
-	 * @throws IOException
-	 *             read write error
-	 * @throws FileAlreadyExistsException
-	 *             if there is allready an file with this name
+	 * @param newName the new Name for the file
+	 * @throws IOException                read write error
+	 * @throws FileAlreadyExistsException if there is allready an file with this
+	 *                                    name
 	 */
 	public void rename(String newName) throws IOException, FileAlreadyExistsException {
 		move(new NFile(getParent(), newName));
@@ -227,45 +223,34 @@ public class NFile {
 	 * 
 	 * @author Nils
 	 * @version 2017-08-18
-	 * @param content
-	 *            all bytes write to the file
-	 * @throws IOException
-	 *             all errors my happen
+	 * @param content all bytes write to the file
+	 * @throws IOException all errors my happen
 	 */
 	public void write(byte[] content) throws IOException {
-		try {
-			FileOutputStream os = new FileOutputStream(getFile());
-			System.out.println("write " + content.length / 1000 + " MB");
-			BufferedOutputStream bos = new BufferedOutputStream(os);
-			bos.write(content);
-			bos.flush();
-			bos.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
+		if (!exisits())
 			save();
-		}
+		FileOutputStream os = new FileOutputStream(getFile());
+		BufferedOutputStream bos = new BufferedOutputStream(os);
+		bos.write(content);
+		bos.flush();
+		bos.close();
 
 	}
 
 	/**
 	 * Description : <br>
-	 * Reads the bytes bytewhise to the file We use the fastest way to read the
-	 * file.<br>
+	 * Reads the bytes all at once from the file. We use the fastest way to read all
+	 * bytes from the file at once.<br>
 	 * File Reading: <a href=
 	 * "http://nadeausoftware.com/articles/2008/02/java_tip_how_read_files_quickly">http://nadeausoftware.com/articles/2008/02/java_tip_how_read_files_quickly</a>
 	 * 
 	 * @author Nils
 	 * @version 2017-08-18
-	 * @return the content redden from the file or new byte[0] on any error
+	 * @return the content redden from the file
+	 * @throws IOException
 	 */
-	public byte[] read() {
-		try {
-			return Files.readAllBytes(file);
-		} catch (IOException e) {
-			System.out.println("Error : return new byte[0]");
-			e.printStackTrace();
-			return new byte[0];
-		}
+	public byte[] read() throws IOException {
+		return Files.readAllBytes(file);
 	}
 
 	/**
@@ -290,26 +275,17 @@ public class NFile {
 		return ResurceLoader.deSerialize(read());
 	}
 
-	public void write(JsonValue<?> object) {
-		try {
-			Files.write(file, object.getJson().getBytes("UTF-8"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void write(JsonValue<?> object) throws UnsupportedEncodingException, IOException {
+		Files.write(file, object.getJson().getBytes("UTF-8"));
 	}
 
-	public JsonValue<?> readJson() {
-		try {
-			JsonInputStream jis = new JsonInputStream(this);
-			JsonValue<?> calue = jis.readNextJson();
-			jis.close();
-			return calue;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public JsonValue<?> readJson() throws IOException {
+		JsonInputStream jis = new JsonInputStream(this);
+		JsonValue<?> calue = jis.readNextJson();
+		jis.close();
+		return calue;
 	}
-	
+
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

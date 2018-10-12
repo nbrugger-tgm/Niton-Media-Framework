@@ -8,7 +8,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -16,6 +18,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Scanner;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
@@ -50,7 +57,20 @@ import javazoom.jl.decoder.JavaLayerException;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		testFolderCopy();
+//		testFolderCopy();
+		ryanTest();
+	}
+
+
+	/**
+	 * <b>Description :</b><br>
+	 * 
+	 * @author Nils Brugger
+	 * @version 2018-09-06
+	 * @throws IOException 
+	 */
+	private static void ryanTest() throws IOException {
+		
 	}
 
 
