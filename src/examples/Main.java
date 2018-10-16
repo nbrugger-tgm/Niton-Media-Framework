@@ -8,21 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Scanner;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
@@ -31,34 +17,31 @@ import com.niton.media.audio.AudioFileRecorder;
 import com.niton.media.audio.AudioQuality;
 import com.niton.media.audio.AudioRecorder;
 import com.niton.media.audio.IllegalStateException;
-import com.niton.media.audio.nio.PlayMode;
-import com.niton.media.audio.nio.basic.MP3Player;
-import com.niton.media.crypt.Cluster;
 import com.niton.media.crypt.ClusterCryptedInputStream;
 import com.niton.media.crypt.ClusterCryptedOutputStream;
-import com.niton.media.filesystem.DataStore;
 import com.niton.media.filesystem.Directory;
 import com.niton.media.filesystem.NFile;
-import com.niton.media.json.basic.JsonArray;
-import com.niton.media.json.basic.JsonObject;
-import com.niton.media.json.basic.JsonString;
-import com.niton.media.json.io.JsonInputStream;
-import com.niton.media.json.io.JsonOutputStream;
-import com.niton.media.json.io.StringInputStream;
-import com.niton.media.json.types.JsonDouble;
-import com.niton.media.json.types.JsonInt;
-import com.niton.media.json.types.JsonSerialObject;
-import com.niton.media.json.types.advanced.AdaptiveJsonValue;
 import com.niton.media.visual.Canvas;
 import com.niton.media.visual.JNetworkPanel;
-
-import javazoom.jl.decoder.JavaLayerException;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 //		testFolderCopy();
-		ryanTest();
+//		ryanTest();
+//		testCanvas();
+		System.out.println("888b      88 88                                   88b           d88                     88 88                      db        88888888ba  88\r\n" + 
+				"8888b     88 \"\"   ,d                              888b         d888                     88 \"\"                     d88b       88      \"8b 88\r\n" + 
+				"88 `8b    88      88                              88`8b       d8'88                     88                       d8'`8b      88      ,8P 88\r\n" + 
+				"88  `8b   88 88 MM88MMM ,adPPYba,  8b,dPPYba,     88 `8b     d8' 88  ,adPPYba,  ,adPPYb,88 88 ,adPPYYba,        d8'  `8b     88aaaaaa8P' 88\r\n" + 
+				"88   `8b  88 88   88   a8\"     \"8a 88P'   `\"8a    88  `8b   d8'  88 a8P_____88 a8\"    `Y88 88 \"\"     `Y8       d8YaaaaY8b    88\"\"\"\"\"\"'   88\r\n" + 
+				"88    `8b 88 88   88   8b       d8 88       88    88   `8b d8'   88 8PP\"\"\"\"\"\"\" 8b       88 88 ,adPPPPP88      d8\"\"\"\"\"\"\"\"8b   88          88\r\n" + 
+				"88     `8888 88   88,  \"8a,   ,a8\" 88       88    88    `888'    88 \"8b,   ,aa \"8a,   ,d88 88 88,    ,88     d8'        `8b  88          88\r\n" + 
+				"88      `888 88   \"Y888 `\"YbbdP\"'  88       88    88     `8'     88  `\"Ybbd8\"'  `\"8bbdP\"Y8 88 `\"8bbdP\"Y8    d8'          `8b 88          88");
+		System.out.println("____________________________________________________________________________________________________________________________________________");
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("GitHub Account : https://github.com/nbrugger-tgm");
+		System.out.println("GitHub Repo    : https://github.com/nbrugger-tgm/Niton-Media-Framework");
 	}
 
 
