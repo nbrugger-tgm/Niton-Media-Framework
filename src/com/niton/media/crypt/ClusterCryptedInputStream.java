@@ -4,7 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-
+/**
+ * @author Nils Brugger
+ * @version 2019-01-24
+ * @deprecated not tested
+ */
+@Deprecated
 public class ClusterCryptedInputStream extends InputStream {
 	private byte[] key;
 	private byte[] buffer;

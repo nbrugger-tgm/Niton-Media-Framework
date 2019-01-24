@@ -4,7 +4,11 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
-
+/**
+ * @author Nils Brugger
+ * @version 2019-01-24
+ * @deprecated not tested
+ */
 public class ClusterCryptedOutputStream extends OutputStream {
 	private byte[] key;
 	private int[] buffer;

@@ -27,6 +27,21 @@ public class SimpleAES {
 	private static final int pad = 16;
 	public static SecretKey lastKey;
 	
+	/**
+	 * <b>Description : Encrypts your bytes</b><br>
+	 * 
+	 * @author Nils Brugger
+	 * @version 2019-01-24
+	 * @param key the key to encrypt with
+	 * @param dataToEncrypt the data to encrypt
+	 * @return the encrypted data
+	 * @throws InvalidKeyException
+	 * @throws InvalidAlgorithmParameterException
+	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException
+	 * @throws IllegalBlockSizeException
+	 * @throws BadPaddingException
+	 */
 	public static byte[] encrypt(SecretKey key, byte[] dataToEncrypt) throws InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		int padding = pad-(dataToEncrypt.length%pad);
 		byte[] padded = new byte[dataToEncrypt.length + padding];
@@ -38,6 +53,18 @@ public class SimpleAES {
 		return doCrypto(Cipher.ENCRYPT_MODE, key, padded);
 	}
 
+	/**
+	 * <b>Description : decrypts the bytes</b><br>
+	 * 
+	 * @author Nils Brugger
+	 * @version 2019-01-24
+	 * @param key the key the data was encrypted with
+	 * @param encryptedData the data to decrypt
+	 * @return the decrypted data or null if the key wasn't right
+	 * @throws InvalidKeyException
+	 * @throws InvalidAlgorithmParameterException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static byte[] decrypt(SecretKey key, byte[] encryptedData) throws InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
 		byte[] dec;
 		try {
