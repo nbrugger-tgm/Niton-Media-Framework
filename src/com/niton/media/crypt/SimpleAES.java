@@ -64,12 +64,13 @@ public class SimpleAES {
 	 * @throws InvalidKeyException
 	 * @throws InvalidAlgorithmParameterException
 	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchPaddingException 
 	 */
-	public static byte[] decrypt(SecretKey key, byte[] encryptedData) throws InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException {
+	public static byte[] decrypt(SecretKey key, byte[] encryptedData) throws InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException {
 		byte[] dec;
 		try {
 			dec = doCrypto(Cipher.DECRYPT_MODE, key, encryptedData);
-		} catch (NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+		} catch (IllegalBlockSizeException | BadPaddingException e) {
 			return null;
 		}
 		byte[] ret = new byte[dec.length - (dec[dec.length - 1])];

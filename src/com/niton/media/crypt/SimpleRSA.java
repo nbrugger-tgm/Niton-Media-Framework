@@ -33,34 +33,25 @@ public class SimpleRSA {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	public static KeyPair generateKeys() {
-		
-		try {
-			final KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
-			keyGen.initialize(2136);
-			final KeyPair key = keyGen.generateKeyPair();
-			return key;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-
+	public static KeyPair generateKeys() throws NoSuchAlgorithmException {
+		final KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
+		keyGen.initialize(2136);
+		final KeyPair key = keyGen.generateKeyPair();
+		return key;
 	}
 
 	/**
 	 * Encrypt the plain text using public key.
 	 * 
-	 * @param text
-	 *            : original plain text
-	 * @param key
-	 *            :The public key
+	 * @param text : original plain text
+	 * @param key  :The public key
 	 * @return Encrypted text
 	 * @throws NoSuchPaddingException
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeyException
 	 * @throws BadPaddingException
 	 * @throws IllegalBlockSizeException
-	 * @throws java.lang.Exception
+	 * @throws                           java.lang.Exception
 	 */
 	public static byte[] encrypt(byte[] data, PublicKey key) throws NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
@@ -76,26 +67,26 @@ public class SimpleRSA {
 	/**
 	 * Decrypt text using private key.
 	 * 
-	 * @param text
-	 *            :encrypted text
-	 * @param key
-	 *            :The private key
-	 * @return plain text
-	 * @throws java.lang.Exception
+	 * @param text :encrypted text
+	 * @param key  :The private key
+	 * @return plain text or null for wrong key
+	 * @throws InvalidKeyException
+	 * @throws NoSuchPaddingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws                          java.lang.Exception
 	 */
-	public static byte[] decrypt(byte[] text, PrivateKey key) {
+	public static byte[] decrypt(byte[] text, PrivateKey key)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 		byte[] dectyptedText = null;
+		// get an RSA cipher object and print the provider
+		final Cipher cipher = Cipher.getInstance(ALGORITHM);
+		// decrypt the text using the private key
+		cipher.init(Cipher.DECRYPT_MODE, key);
 		try {
-			// get an RSA cipher object and print the provider
-			final Cipher cipher = Cipher.getInstance(ALGORITHM);
-			// decrypt the text using the private key
-			cipher.init(Cipher.DECRYPT_MODE, key);
 			dectyptedText = cipher.doFinal(text);
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (IllegalBlockSizeException | BadPaddingException e) {
+			return null;
 		}
-
 		return dectyptedText;
 	}
 }
