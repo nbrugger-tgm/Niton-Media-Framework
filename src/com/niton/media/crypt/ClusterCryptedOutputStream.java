@@ -9,6 +9,7 @@ import java.util.Arrays;
  * @version 2019-01-24
  * @deprecated not tested
  */
+@Deprecated
 public class ClusterCryptedOutputStream extends OutputStream {
 	private byte[] key;
 	private int[] buffer;
