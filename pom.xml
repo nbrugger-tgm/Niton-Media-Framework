@@ -58,19 +58,19 @@
             <version>0.2.5</version>
         </dependency>
         <dependency>
-            <groupId>com.sample</groupId>
-            <artifactId>sample2</artifactId>
-            <version>1.1</version>
+            <groupId>com.external</groupId>
+            <artifactId>tag-edit</artifactId>
+            <version>unknown</version>
             <scope>system</scope>
-            <systemPath>/media/nils/Data/Users/Nils/Desktop/Workspaces/API/Nitons Media Librarty/TagEddit.jar</systemPath>
+            <systemPath>${project.basedir}/TagEddit.jar</systemPath>
         </dependency>
 
         <dependency>
-            <groupId>com.sample</groupId>
-            <artifactId>sample1</artifactId>
-            <version>1.2</version>
+            <groupId>com.external</groupId>
+            <artifactId>filedrop</artifactId>
+            <version>unknown</version>
             <scope>system</scope>
-            <systemPath>/media/nils/Data/Users/Nils/Desktop/Workspaces/API/Nitons Media Librarty/filedrop.jar</systemPath>
+            <systemPath>${project.basedir}/filedrop.jar</systemPath>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javazoom/jlayer -->
@@ -79,7 +79,7 @@
             <artifactId>jlayer</artifactId>
             <version>1.0.1</version>
             <scope>system</scope>
-            <systemPath>/media/nils/Data/Users/Nils/Desktop/Workspaces/API/Nitons Media Librarty/jl1.0.1.jar</systemPath>
+            <systemPath>${project.basedir}/jl1.0.1.jar</systemPath>
         </dependency>
 
     </dependencies>
