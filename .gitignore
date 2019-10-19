@@ -1,3 +1,5 @@
-
+target/**
 Niton-Media-Framework/
 *.db
+bin\**
+bin/**
