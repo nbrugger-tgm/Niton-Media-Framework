@@ -3,3 +3,4 @@ Niton-Media-Framework/
 *.db
 bin\**
 bin/**
+.idea\**
