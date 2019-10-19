@@ -57,7 +57,7 @@ public class Cluster {
 			cluster = new byte[(int) sqrt][(int) sqrt];
 			setData(data);
 		} else {
-			throw new IllegalArgumentException("Data has to be an byte[n²] Value");
+			throw new IllegalArgumentException("Data has to be an byte[nÂ²] Value");
 		}
 	}
 
@@ -125,7 +125,7 @@ public class Cluster {
 	public void setData(byte[] data) {
 		double sqrt = Math.sqrt(data.length);
 		if (sqrt != (long) sqrt) 
-			throw new IllegalArgumentException("Data has to be an byte[n²] Value");
+			throw new IllegalArgumentException("Data has to be an byte[nÂ²] Value");
 		int c = 0;
 		for (int i = 0; i < cluster.length; i++) {
 			byte[] b = cluster[i];

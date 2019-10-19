@@ -1,23 +1,14 @@
 package com.niton.media.json;
 
+import com.niton.media.json.basic.JsonString;
+import com.niton.media.json.basic.JsonValue;
+import com.niton.media.json.types.*;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.niton.media.json.basic.JsonString;
-import com.niton.media.json.basic.JsonValue;
-import com.niton.media.json.types.JsonBoolean;
-import com.niton.media.json.types.JsonByte;
-import com.niton.media.json.types.JsonChar;
-import com.niton.media.json.types.JsonDouble;
-import com.niton.media.json.types.JsonFloat;
-import com.niton.media.json.types.JsonInt;
-import com.niton.media.json.types.JsonLong;
-import com.niton.media.json.types.JsonShort;
-import com.niton.media.json.types.advanced.JsonArrayList;
-import com.niton.media.json.types.advanced.JsonHashMap;
 
 
 /**
@@ -40,8 +31,8 @@ public class JsonSerializer {
 		registerJsonType(Float.class, JsonFloat.class);
 		registerJsonType(Double.class, JsonDouble.class);
 		
-		registerJsonType(ArrayList.class, (Class<? extends JsonValue<?>>) JsonArrayList.class);
-		registerJsonType(HashMap.class, (Class<? extends JsonValue<?>>) JsonHashMap.class);
+		//registerJsonType(ArrayList.class, (Class<? extends JsonValue<?>>) JsonArrayList.class);
+		//registerJsonType(HashMap.class, (Class<? extends JsonValue<?>>) JsonHashMap.class);
 	}
 
 	public static <T> Class<? extends JsonValue<T>> getJsonFor(Class<T> c) {

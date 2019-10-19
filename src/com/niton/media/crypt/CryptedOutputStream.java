@@ -1,12 +1,16 @@
 package com.niton.media.crypt;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-
-import javax.crypto.SecretKey;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class CryptedOutputStream extends OutputStream {
 	private SecretKey key;
@@ -38,7 +42,14 @@ public class CryptedOutputStream extends OutputStream {
 
 	@Override
 	public void flush() throws IOException {
-		byte[] cryptedData = SimpleAES.encrypt(key, bos.toByteArray());
+		byte[] cryptedData = new byte[0];
+		try {
+			cryptedData = SimpleAES.encrypt(key, bos.toByteArray());
+		} catch (InvalidKeyException | InvalidAlgorithmParameterException | NoSuchAlgorithmException
+				| NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		bos.reset();
 		ObjectOutputStream oos = new ObjectOutputStream(os);
 		oos.writeObject(cryptedData);

@@ -3,7 +3,11 @@ package com.niton.media.crypt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 public class CryptedInputStream extends InputStream {
@@ -45,7 +49,13 @@ public class CryptedInputStream extends InputStream {
 			}
 			ObjectInputStream oin = new ObjectInputStream(instream);
 			reciedData = (byte[]) oin.readObject();
-			reciedData = SimpleAES.decrypt(key, reciedData);
+			try {
+				reciedData = SimpleAES.decrypt(key, reciedData);
+			} catch (InvalidKeyException | InvalidAlgorithmParameterException | NoSuchAlgorithmException
+					| NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (ClassNotFoundException e) {
 		}
 	}

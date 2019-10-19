@@ -1,20 +1,9 @@
 package com.niton.media.visual;
 
-import java.awt.BorderLayout;
-import java.io.IOException;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import org.jcodec.api.JCodecException;
-import org.jcodec.api.SequenceEncoder;
-import org.jcodec.api.awt.FrameGrab;
-import org.jcodec.common.FileChannelWrapper;
-import org.jcodec.common.NIOUtils;
-import org.jcodec.common.SeekableByteChannel;
-
-import com.googlecode.mp4parser.util.ChannelHelper;
 import com.niton.media.State;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * This is the JVideoView Class
