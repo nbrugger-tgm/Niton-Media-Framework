@@ -16,7 +16,7 @@
         <java.version>1.8</java.version>
         <app.name>Media API</app.name>
         <app.artifact>media-api</app.artifact>
-        <app.version>2.1</app.version>
+        <app.version>2.2</app.version>
         <build.starter>example.Main</build.starter>
 
         <!-- Advanced -->
@@ -81,7 +81,6 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/jl1.0.1.jar</systemPath>
         </dependency>
-
     </dependencies>
 
 
