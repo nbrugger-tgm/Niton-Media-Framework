@@ -36,7 +36,7 @@ import com.niton.media.json.basic.JsonString;
  * @author Nils
  * @version 2017-08-16
  */
-public final class ResurceLoader {
+public final class IOUntility {
 	/**
 	 * Creates an input stream of an file in the Jar file The path have to start<br>
 	 * with an '/' otherwise we add it! You can use this formats:<br>
@@ -59,7 +59,7 @@ public final class ResurceLoader {
 		if (!path.startsWith("/")) {
 			path = "/" + path;
 		}
-		InputStream s = ResurceLoader.class.getResourceAsStream(path);
+		InputStream s = IOUntility.class.getResourceAsStream(path);
 		return s;
 	}
 
@@ -93,7 +93,7 @@ public final class ResurceLoader {
 		path = path.replace('.', '/');
 		path = path.replace('\\', '/');
 		path = path.replace('?', '.');
-		InputStream s = ResurceLoader.class.getResourceAsStream(path);
+		InputStream s = IOUntility.class.getResourceAsStream(path);
 		return s;
 	}
 
@@ -139,6 +139,25 @@ public final class ResurceLoader {
 		oos.writeObject(serial);
 		return baos.toByteArray();
 	}
+	
+	/**
+	 * Serializes the given object and writes it into the given stream!<br>
+	 * The object has to be <i>Serializeable</i>
+	 * 
+	 * @author Nils
+	 * @version 2017-08-18
+	 * @param serial
+	 *            the object to serialize
+	 * @return the serialized object
+	 * @throws IOException
+	 *             if there is an error writing into streams
+	 */
+	public static final void serialize(Serializable serial,OutputStream stream) throws IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(stream);
+		oos.writeObject(serial);
+		oos.flush();
+		oos.close();
+	}
 
 	/**
 	 * Creates an Serializable object out of an byte Array!
@@ -161,6 +180,27 @@ public final class ResurceLoader {
 		return ser;
 	}
 
+	/**
+	 * Creates an Serializable object out of an byte Array!
+	 * 
+	 * @author Nils
+	 * @version 2017-08-18
+	 * @param serialized
+	 *            the serialized object
+	 * @return the object of the data
+	 * @throws IOException
+	 *             if there is an error reading/writing in streams
+	 * @throws ClassNotFoundException
+	 *             if the class to deserialize is not found
+	 */
+	@SuppressWarnings("unchecked")
+	public  static  final <T extends Serializable> T deSerialize(InputStream stream) throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(stream);
+		Serializable ser = (Serializable) ois.readObject();
+		ois.close();
+		return (T) ser;
+	}
+	
 	/**
 	 * Copy a file from the JAR to the hard disk.<br>
 	 * Reading and writing byte-wise.<br>
@@ -214,7 +254,6 @@ public final class ResurceLoader {
 				b = in.read(buffer);
 			}
 		} catch (IOException e) {
-			System.out.println("Error : return new byte[0]");
 			e.printStackTrace();
 		}
 	}
@@ -387,7 +426,7 @@ public final class ResurceLoader {
 	 * Reads and parses an XML Document inside a jar<br>
 	 * 
 	 * @param path
-	 *            is used in the method {@link ResurceLoader#getInputStream(String)}
+	 *            is used in the method {@link IOUntility#getInputStream(String)}
 	 *            to get the File as Stream
 	 * @return the parsed XML Document or null on error
 	 * @throws ParserConfigurationException 
@@ -402,7 +441,7 @@ public final class ResurceLoader {
 	 * Reads and parses an XML Document outside a jar<br>
 	 * 
 	 * @param path
-	 *            is used in the method {@link ResurceLoader#getInputStream(String)}
+	 *            is used in the method {@link IOUntility#getInputStream(String)}
 	 *            to get the File as Stream
 	 * @return the parsed XML Document or null on error
 	 * @throws IOException 
@@ -416,7 +455,7 @@ public final class ResurceLoader {
 	 * Reads and parses an XML Document from an Stream<br>
 	 * 
 	 * @param path
-	 *            is used in the method {@link ResurceLoader#getInputStream(String)}
+	 *            is used in the method {@link IOUntility#getInputStream(String)}
 	 *            to get the File as Stream
 	 * @return the parsed XML Document or null on error
 	 * @throws ParserConfigurationException 
@@ -474,7 +513,7 @@ public final class ResurceLoader {
 	public static File getThisFile() {
 
 		try {
-			return new File(ResurceLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+			return new File(IOUntility.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

@@ -17,7 +17,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.niton.media.ResurceLoader;
+import org.jcodec.common.io.IOUtils;
+
+import com.niton.media.IOUntility;
 import com.niton.media.json.basic.JsonValue;
 import com.niton.media.json.io.JsonInputStream;
 
@@ -58,6 +60,14 @@ public class NFile {
 		return file;
 	}
 
+	public Path toPath() {
+		return file;
+	}
+
+	public File toFile() {
+		return file.toFile();
+	}
+
 	public String getPathAsString() {
 		return getPath().toString();
 	}
@@ -70,7 +80,16 @@ public class NFile {
 		return file.getRoot();
 	}
 
-	public int getDeepnes() {
+	/**
+	 * Calculates how deep the file is in the file structure (how many folders you need to go thought to get to the file)
+	 * eg.<br>
+	 * D:\test\test\file.ext -> 2  <br>
+	 * /ect/init.d/somother/idfk/test.bin -> 4
+	 * @author Nils Brugger
+	 * @version 2019-10-21
+	 * @return the depth
+	 */
+	public int getDepth() {
 		return file.getNameCount();
 	}
 
@@ -121,7 +140,30 @@ public class NFile {
 
 	public void copy(NFile target) throws IOException {
 		target.save();
-		target.write(read());
+		target.write(getInputStream());
+	}
+
+	/**
+	 * <b>Description :</b><br>
+	 * 
+	 * @author Nils Brugger
+	 * @version 2019-10-21
+	 * @param inputStream
+	 * @throws FileNotFoundException 
+	 */
+	public void write(InputStream inputStream) throws FileNotFoundException {
+		IOUntility.copyBigStream(inputStream, getOutputStream());
+	}
+	
+	/**
+	 * 
+	 * @author Nils Brugger
+	 * @version 2019-10-21
+	 * @param out
+	 * @throws FileNotFoundException
+	 */
+	public void read(OutputStream out) throws FileNotFoundException {
+		IOUntility.copyBigStream(getInputStream(), out);
 	}
 
 	public void copyBig(NFile target) throws IOException {
@@ -161,9 +203,7 @@ public class NFile {
 		if (target.exisits())
 			throw new FileAlreadyExistsException(
 					"Move file to existing file impossible! use NFile.moveReplace(NFile) instead");
-		target.save();
-		target.setText(getText());
-		delete();
+		Files.move(file, target.file);
 	}
 
 	/**
@@ -268,11 +308,11 @@ public class NFile {
 	}
 
 	public void write(Serializable data) throws IOException {
-		write(ResurceLoader.serialize(data));
+		write(IOUntility.serialize(data));
 	}
 
 	public Serializable readData() throws ClassNotFoundException, IOException {
-		return ResurceLoader.deSerialize(read());
+		return IOUntility.deSerialize(read());
 	}
 
 	public void write(JsonValue<?> object) throws UnsupportedEncodingException, IOException {
@@ -292,5 +332,25 @@ public class NFile {
 	@Override
 	public boolean equals(Object obj) {
 		return this.toString().equals(obj.toString());
+	}
+
+	/**
+	 * Compares if the content od the stream matches the content of the file
+	 * 
+	 * @author Nils Brugger
+	 * @version 2019-10-21
+	 * @param otherSource
+	 * @return true if content is the same
+	 * @throws IOException
+	 */
+	public boolean compareContent(InputStream otherSource) throws IOException {
+		InputStream myStream = getInputStream();
+		int b = myStream.read();
+		while (b != -1) {
+			if (otherSource.read() != b)
+				return false;
+			b = myStream.read();
+		}
+		return true;
 	}
 }

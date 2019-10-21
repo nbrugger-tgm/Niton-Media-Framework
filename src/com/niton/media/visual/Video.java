@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-import com.niton.media.ResurceLoader;
+import com.niton.media.IOUntility;
 import com.niton.media.State;
 import com.niton.media.filesystem.NFile;
 
@@ -65,7 +65,7 @@ public class Video{
 	 */
 	public Video(String path,boolean inJar) {
 		if(inJar)
-			stream = ResurceLoader.getInputStream(path);
+			stream = IOUntility.getInputStream(path);
 		else
 			try {
 				stream = new FileInputStream(path);
