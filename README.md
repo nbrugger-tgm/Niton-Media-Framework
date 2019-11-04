@@ -6,11 +6,19 @@ The API also includes many 3rd Party APIs like JCodec, JSoup and the Java Zoom M
 But we dont simply importet them, we also made them easy to use and make some abstract classes to use it in a simple way and added some really cool features.
 But the main content is completely self created.
 ## Overview
- 1. Functions
- 2. Sub APIs
- 3. Where to use
- 4. Examples
- 5. Rights and Usage
+ 1. Installation
+ 2. Functions
+ 3. Sub APIs
+ 4. Where to use
+ 5. Examples
+ 6. Rights and Usage
+## Installation
+> You need `maven` for the installation
+```bash
+git clone https://github.com/nbrugger-tgm/Niton-Media-Framework/
+cd Niton-Media-Framework
+mvn install
+```
 ## Functions
  1. File System and IO Operations
  2. Utilitys
