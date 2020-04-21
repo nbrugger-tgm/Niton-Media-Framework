@@ -66,9 +66,10 @@ All the methods in the class are well documented or self describing.
 I have some Swing Components they are also documented so take a look at `com.niton.media.visual`.
 I am not done and there will be much more in the future.
 ### JSON
-This is one of the parts i am the most proud of, because it seems to be the only simple to use working and well designed. The package is as you can predict `com.niton.media.json` .
-Another very very cool feature is an VERY easy Serialisation where you can generate JSON out of Java Objects.
-For this purpose you can use `new JsonObject(instanceToSerialize)`
+This part become an seperate project : [JsonIO](https://github.com/nbrugger-tgm/JsonIO)<br>
+~~This is one of the parts i am the most proud of, because it seems to be the only simple to use working and well designed. The package is as you can predict `com.niton.media.json` .~~
+~~Another very very cool feature is an VERY easy Serialisation where you can generate JSON out of Java Objects.~~
+~~For this purpose you can use~~ ~~`new JsonObject(instanceToSerialize)`~~
 
 ## Where to use
 You can use this API great for :

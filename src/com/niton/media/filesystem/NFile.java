@@ -1,27 +1,14 @@
 package com.niton.media.filesystem;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import com.niton.media.IOUntility;
+
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.jcodec.common.io.IOUtils;
-
-import com.niton.media.IOUntility;
-import com.niton.media.json.basic.JsonValue;
-import com.niton.media.json.io.JsonInputStream;
 
 public class NFile {
 	private Path file;
@@ -313,17 +300,6 @@ public class NFile {
 
 	public Serializable readData() throws ClassNotFoundException, IOException {
 		return IOUntility.deSerialize(read());
-	}
-
-	public void write(JsonValue<?> object) throws UnsupportedEncodingException, IOException {
-		Files.write(file, object.getJson().getBytes("UTF-8"));
-	}
-
-	public JsonValue<?> readJson() throws IOException {
-		JsonInputStream jis = new JsonInputStream(this);
-		JsonValue<?> calue = jis.readNextJson();
-		jis.close();
-		return calue;
 	}
 
 	/**

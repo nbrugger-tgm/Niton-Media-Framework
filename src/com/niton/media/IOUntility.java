@@ -1,34 +1,19 @@
 package com.niton.media;
 
-import java.awt.Image;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.niton.media.filesystem.NFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.niton.media.filesystem.NFile;
-import com.niton.media.json.basic.JsonPair;
-import com.niton.media.json.basic.JsonString;
+import javax.swing.*;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 
 /**
  * This is the ResurceLoader Class
@@ -454,7 +439,7 @@ public final class IOUntility {
 	/**
 	 * Reads and parses an XML Document from an Stream<br>
 	 * 
-	 * @param path
+	 * @param in
 	 *            is used in the method {@link IOUntility#getInputStream(String)}
 	 *            to get the File as Stream
 	 * @return the parsed XML Document or null on error

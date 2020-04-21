@@ -1,18 +1,5 @@
 package examples;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.swing.JFrame;
-
 import com.niton.media.audio.AudioFileRecorder;
 import com.niton.media.audio.AudioQuality;
 import com.niton.media.audio.AudioRecorder;
@@ -23,6 +10,11 @@ import com.niton.media.filesystem.Directory;
 import com.niton.media.filesystem.NFile;
 import com.niton.media.visual.Canvas;
 import com.niton.media.visual.JNetworkPanel;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 
 public class Main {
 
@@ -42,20 +34,8 @@ public class Main {
 		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------");
 		System.out.println("GitHub Account : https://github.com/nbrugger-tgm");
 		System.out.println("GitHub Repo    : https://github.com/nbrugger-tgm/Niton-Media-Framework");
+		testCanvas();
 	}
-
-
-	/**
-	 * <b>Description :</b><br>
-	 * 
-	 * @author Nils Brugger
-	 * @version 2018-09-06
-	 * @throws IOException 
-	 */
-	private static void ryanTest() throws IOException {
-		
-	}
-
 
 	/**
 	 * Description : 
@@ -64,7 +44,7 @@ public class Main {
 	 * @throws IOException 
 	 */
 	private static void testFolderCopy() throws IOException {
-		Directory d = new Directory("D:\\Desktop\\Restaurant Manager");
+		Directory d = new Directory("D:\\Desktop\\from");
 		Directory target = new Directory("D:\\Desktop\\backup");
 //		Directory todel = target.addDir("backup");
 //		todel.delete();
@@ -152,7 +132,7 @@ public class Main {
 	private static void testCanvas() {
 
 		Canvas c = new Canvas() {
-			final double speed = 0.1;
+			final double speed = 0.075;
 			final Rectangle r = new Rectangle(20, 20, 50, 50);
 			boolean grow = false;
 			private Color c = Color.GREEN;
