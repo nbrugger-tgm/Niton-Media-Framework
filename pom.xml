@@ -52,34 +52,12 @@
             <artifactId>jcodec-javase</artifactId>
             <version>0.2.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.jcodec</groupId>
-            <artifactId>jcodec</artifactId>
-            <version>0.2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.external</groupId>
-            <artifactId>tag-edit</artifactId>
-            <version>unknown</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/TagEddit.jar</systemPath>
-        </dependency>
 
-        <dependency>
-            <groupId>com.external</groupId>
-            <artifactId>filedrop</artifactId>
-            <version>unknown</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/filedrop.jar</systemPath>
-        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javazoom/jlayer -->
         <dependency>
             <groupId>javazoom</groupId>
             <artifactId>jlayer</artifactId>
             <version>1.0.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/jl1.0.1.jar</systemPath>
         </dependency>
     </dependencies>
 
