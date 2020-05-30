@@ -44,6 +44,8 @@ public class SimpleAES {
 	 */
 	public static byte[] encrypt(SecretKey key, byte[] dataToEncrypt) throws InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		int padding = pad-(dataToEncrypt.length%pad);
+		if(padding == 0)
+            padding = pad;
 		byte[] padded = new byte[dataToEncrypt.length + padding];
 		Random r = new Random();
 		for (int i = 0; i < padded.length; i++) {
