@@ -1,14 +1,10 @@
 package com.niton.media.visual;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Stroke;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * This is the Canvas Class
@@ -18,6 +14,12 @@ import javax.swing.JPanel;
 public abstract class Canvas extends JPanel{
 	private static final long serialVersionUID = 1956962518976682936L;
 	private long lastFrame = System.currentTimeMillis();
+	@Getter
+	@Setter
+	private boolean limitFrames = true;
+	@Getter
+	@Setter
+	private int fps = 120;
 	public abstract void paint(Graphics2D g,int delta);
 	
 	public void paintRectangle(Rectangle rec,Graphics g) {
@@ -91,6 +93,13 @@ public abstract class Canvas extends JPanel{
 		g2.setFont(getFont());
 		long now = System.currentTimeMillis();
 		int dif = (int) (now-lastFrame);
+		if(limitFrames && dif < (1000/fps)) {
+			try {
+				Thread.sleep((1000/fps)-dif);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		lastFrame = now;
 		paint(g2, dif);
 		repaint();

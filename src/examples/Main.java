@@ -34,7 +34,7 @@ public class Main {
 		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------");
 		System.out.println("GitHub Account : https://github.com/nbrugger-tgm");
 		System.out.println("GitHub Repo    : https://github.com/nbrugger-tgm/Niton-Media-Framework");
-		testCanvas();
+		testNetwork();
 	}
 
 	/**
@@ -215,31 +215,38 @@ public class Main {
 		frame.setSize(1920, 1080);
 		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
-		jn.spawnBallz(200);
-		jn.setSpeed(3);
+		jn.spawnBallz(80);
+		jn.setSpeed(2);
+		jn.setNodeSize(10);
+		jn.setThic(1);
 		jn.setConDist(200);
-		jn.setBack1(Color.BLACK);
-		jn.setBack2(Color.black);
-		jn.setDots(Color.WHITE);
-		new Thread(new Runnable() {
-			int c = 0;
-
-			@Override
-			public void run() {
-				while (frame.isVisible()) {
-					if (c % 10 == 0) {
-						jn.spawnBallz(1);
-					}
-					jn.repaint();
-					c++;
-					try {
-						Thread.sleep(1000 / 30);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
+		jn.setBack2(new Color(5, 5, 50));
+//		jn.setBack1(Color.BLACK);
+//		jn.setBack2(Color.black);
+//		jn.setDots(Color.WHITE);
+		jn.setAutorefresh(true);
+		jn.setRandomDotsize(false);
+		jn.setFramerate(50);
+		jn.setReactive(true);
+//		new Thread(new Runnable() {
+//			int c = 0;
+//
+//			@Override
+//			public void run() {
+//				while (frame.isVisible()) {
+//					if (c % 10 == 0) {
+//						jn.spawnBallz(1);
+//					}
+//					jn.repaint();
+//					c++;
+//					try {
+//						Thread.sleep(1000 / 30);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//		}).start();
 	}
 
 }
