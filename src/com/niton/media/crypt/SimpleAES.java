@@ -1,18 +1,16 @@
 package com.niton.media.crypt;
 
+import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
-
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import javax.crypto.*;
 
 /**
  * A utility class for en/decrypting byte[] and Objects
@@ -105,6 +103,24 @@ public class SimpleAES {
 	}
 
 	public static SecretKey getKey(byte[] bytes) {
+		if(bytes.length != 128/8 && bytes.length != 2*128/8){
+			byte[] newArr = new byte[2*128/8];
+			for (int i = 0; i < Math.min(bytes.length,newArr.length); i++) {
+				newArr[i] = bytes[i];
+			}
+			bytes = newArr;
+		}
+		SecretKey key2 = new SecretKeySpec(bytes, 0, bytes.length, ALGORITHM);
+		return key2;
+	}
+	public static SecretKey getKey(byte[] bytes,int size) {
+		if(bytes.length != size/8){
+			byte[] newArr = new byte[size/8];
+			for (int i = 0; i < Math.min(bytes.length,newArr.length); i++) {
+				newArr[i] = bytes[i];
+			}
+			bytes = newArr;
+		}
 		SecretKey key2 = new SecretKeySpec(bytes, 0, bytes.length, ALGORITHM);
 		return key2;
 	}

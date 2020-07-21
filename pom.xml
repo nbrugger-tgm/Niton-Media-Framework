@@ -16,7 +16,7 @@
         <java.version>1.8</java.version>
         <app.name>Media API</app.name>
         <app.artifact>media-api</app.artifact>
-        <app.version>2.8.4</app.version>
+        <app.version>2.8.5</app.version>
         <build.starter>example.Main</build.starter>
 
         <!-- Advanced -->
