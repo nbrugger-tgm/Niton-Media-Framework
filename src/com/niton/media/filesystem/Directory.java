@@ -1,8 +1,6 @@
 package com.niton.media.filesystem;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
  * @author Nils
  * @version 2017-08-28
  */
-public class Directory {
+public class Directory implements Serializable {
 	private Path file;
 
 	/**
@@ -490,4 +488,13 @@ public class Directory {
 		return getPathAsString();
 	}
 
+	private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException
+	{
+		file = Paths.get(aInputStream.readUTF());
+	}
+
+	private void writeObject(ObjectOutputStream aOutputStream) throws IOException
+	{
+		aOutputStream.writeUTF(getAbsolutePath());
+	}
 }

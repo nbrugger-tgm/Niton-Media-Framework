@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class NFile {
+public class NFile implements Serializable{
 	private Path file;
 
 	public NFile(String path) {
@@ -328,5 +328,14 @@ public class NFile {
 			b = myStream.read();
 		}
 		return true;
+	}
+	private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException
+	{
+		file = Paths.get(aInputStream.readUTF());
+	}
+
+	private void writeObject(ObjectOutputStream aOutputStream) throws IOException
+	{
+		aOutputStream.writeUTF(getAbsolutePath());
 	}
 }

@@ -31,15 +31,10 @@
         <build.jar>true</build.jar>
         <build.war>false</build.war>
         <build.goal>install</build.goal>
-        <build.include.dependencys>true</build.include.dependencys>
+        <build.include.dependencys>false</build.include.dependencys>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.objenesis</groupId>
-            <artifactId>objenesis</artifactId>
-            <version>3.0.1</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org/jaudiotagger -->
         <dependency>
             <groupId>org</groupId>
@@ -47,24 +42,20 @@
             <version>2.0.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.jcodec</groupId>
-            <artifactId>jcodec-javase</artifactId>
-            <version>0.2.5</version>
-        </dependency>
+
 
         <dependency>
             <groupId>javazoom</groupId>
             <artifactId>jlayer</artifactId>
             <version>1.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
-        </dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.12</version>
+			<scope>provided</scope>
+		</dependency>
     </dependencies>
-
 
     <!--  !!!DO NOT EDIT BELLOW!!!  -->
     <!--  !!!DO NOT EDIT BELLOW!!!  -->
@@ -169,6 +160,9 @@
                                     <classpathPrefix>lib/</classpathPrefix>
                                     <classpathPrefix>dependency-jars/</classpathPrefix>
                                 </manifest>
+								<manifestEntries>
+									<Automatic-Module-Name>niton.media</Automatic-Module-Name>
+								</manifestEntries>
                             </archive>
                         </configuration>
                     </plugin>
@@ -343,7 +337,17 @@
                 <version>2.22.1</version>
             </plugin>
 
-
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-jar-plugin</artifactId>
+			  <configuration>
+				<archive>
+				  <manifestEntries>
+					<Automatic-Module-Name>niton.media</Automatic-Module-Name>
+				  </manifestEntries>
+				</archive>
+			  </configuration>
+			</plugin>
 
             <!-- Compiler -->
             <plugin>
@@ -352,6 +356,13 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.12</version>
+						</path>
+					</annotationProcessorPaths>
                 </configuration>
             </plugin>
 
