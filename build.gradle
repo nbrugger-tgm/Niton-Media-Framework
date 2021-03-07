@@ -21,7 +21,11 @@ repositories {
 dependencies {
     compile 'org:jaudiotagger:2.0.3'
     compile 'javazoom:jlayer:1.0.1'
-    compileOnly 'org.projectlombok:lombok:1.18.12'
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.16'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
 
 group = 'com.niton'
