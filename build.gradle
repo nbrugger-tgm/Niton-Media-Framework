@@ -6,14 +6,18 @@ plugins {
     id 'java'
     id 'maven-publish'
 }
-
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
 repositories {
-    mavenLocal()
+    jcenter()
     maven {
-        url = 'http://repo.maven.apache.org/maven2'
+        url("https://niton.jfrog.io/artifactory/java-libs/")
     }
 }
-
 dependencies {
     compile 'org:jaudiotagger:2.0.3'
     compile 'javazoom:jlayer:1.0.1'
@@ -25,10 +29,36 @@ version = '2.8.5'
 description = 'Media API'
 sourceCompatibility = '1.8'
 
+javadoc {
+	failOnError = false
+}
 publishing {
     publications {
-        maven(MavenPublication) {
+        gpr(MavenPublication) {
             from(components.java)
+            pom {
+                developers {
+                    developer {
+                        id = 'nbugger'
+                        email = 'nbrugger@student.tgm.ac.at'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+		
+		maven {
+            name = "Artifactory"
+            url = "https://niton.jfrog.io/artifactory/java-libs"
+            credentials {
+                username = "nbrugger@student.tgm.ac.at"
+				def pwdFile = new File("TOKENS")
+				if(pwdFile.exists())
+                    password = pwdFile.readLines().get(0)
+                else
+					password = System.getenv("ARTIFACTORY_API_KEY")
+            }
         }
     }
 }

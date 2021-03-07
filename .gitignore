@@ -7,3 +7,5 @@ bin/**
 .idea/**
 Nitons Media Librarty.iml
 .gradle/
+build/
+TOKENS
