@@ -6,3 +6,4 @@ bin/**
 .idea\**
 .idea/**
 Nitons Media Librarty.iml
+.gradle/
