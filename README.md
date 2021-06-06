@@ -1,33 +1,31 @@
-# Niton's Media API
+> ## This projectis currently under mainstance and being reworked. Version **3.0.0rc0** will be the next stable version
+
+
+# Niton's Media API (name is subject to change)
 ## Description
-Nitons Media API is an ***very*** big and **high level Java API**
+Nitons Media API is an big and high level Java API.
+
 It provides it provides many Classes utilitys to do I/O operations.
-The API also includes many 3rd Party APIs like JCodec, JSoup and the Java Zoom MP3 Parser.
-But we dont simply importet them, we also made them easy to use and make some abstract classes to use it in a simple way and added some really cool features.
-But the main content is completely self created.
+~~The API also includes many 3rd Party APIs like JCodec, JSoup and the Java Zoom MP3 Parser.~~
 ## Overview
  1. Installation
  2. Functions
  3. Sub APIs
  4. Where to use
  5. Examples
- 6. Rights and Usage
 ## Installation
-> You need `maven` for the installation
-```bash
-git clone https://github.com/nbrugger-tgm/Niton-Media-Framework/
-cd Niton-Media-Framework
-mvn install
-```
+
+> Todo: Add maven/gradle repo / artifact
+
 ## Functions
  1. File System and IO Operations
  2. Utilitys
- 3. Audio
+ 3. Audio (MP3)
  4. Cryptography
 	 1. AES / RSA
 	 2. Cluster
  5. Visuals 
- 6. JSON Parser / Serializer
+ 6. ~~JSON Parser / Serializer~~ (moved to an independent project called `json-io`
 ### File System and IO Operations
 The package for all the features is `com.niton.media.filesystem` and `com.niton.media.streaming`
 The most importat  classes and these are the base for the whole API and appear everywhere, are  `NFile` and `Directory`
@@ -67,9 +65,6 @@ I have some Swing Components they are also documented so take a look at `com.nit
 I am not done and there will be much more in the future.
 ### JSON
 This part became a seperate project : [JsonIO](https://github.com/nbrugger-tgm/JsonIO)<br>
-~~This is one of the parts i am the most proud of, because it seems to be the only simple to use working and well designed. The package is as you can predict `com.niton.media.json` .~~
-~~Another very very cool feature is an VERY easy Serialisation where you can generate JSON out of Java Objects.~~
-~~For this purpose you can use~~ ~~`new JsonObject(instanceToSerialize)`~~
 
 ## Where to use
 You can use this API great for :
@@ -84,33 +79,7 @@ You can use this API great for :
  - Play Video (soon)
  - Do things with files: easy moving and so on
 ## Examples
-Cryptography:
- - RSA or AES en/decrypt a byte array 
 
-    `byte[] dataToEncrypt = "Some ****** very ****** bad text nobody is allowed to see".getBytes("UTF-8");
-    SecretKey key        = SimpleAES.generateKey(128);
-    byte[] encryptedData = SimpleAES.encrypt(key, dataToEncrypt);
-    //Some Time in between
-    byte[] decryptedData = SimpleAES.decrypt(key, encryptedData);`
-
- - Cluster en/decrypt a byte array 
-
-    `byte[] dataToEncrypt = "Some ****** very ****** bad text nobody is allowed to see".getBytes("UTF-8");
-    byte[] key           = SimpleAES.generateRandom(1024);
-    byte[] encryptedData = SimpleCluster.encrypt(key, dataToEncrypt);
-    //Some Time in between
-    byte[] decryptedData = SimpleCluster.decrypt(key, encryptedData);`
-    
-
- - Encrypt an `Serializeable` Object
-
-    `Rectangle secretRectangle = new Rectangle(123, 448, 625, 326);
-		SecretKey key = SimpleAES.generateKey(128);
-		SealedObject encrypted = SimpleAES.encryptObject(secretRectangle, key);
-		//You can do whatever you want here. I save it into an File
-		File f = new File("C:/myfile.obj.enc");
-		FileOutputStream fos = new FileOutputStream(f);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(encrypted);`
+> Add short and eyecatching examples
  
 More Examples are found in the `example` package
