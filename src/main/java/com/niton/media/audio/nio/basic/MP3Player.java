@@ -131,8 +131,10 @@ public class MP3Player extends com.niton.media.audio.nio.basic.Player{
 					fireMusicEndEvent();
 					player = null;
 				}
+				//TODO: prevent this busy waiting
 				break;
 			case PAUSED:
+				//TODO: prevent this busy waiting
 				break;
 			case PLAY:
 				try {
@@ -149,11 +151,13 @@ public class MP3Player extends com.niton.media.audio.nio.basic.Player{
 			case STOPPED:
 				if(player != null)
 					player = null;
+				//TODO: prevent this busy waiting
 				break;
 			}
 			if(state != PlayState.PLAY){
 				try {
 					Thread.sleep(20);
+					//TODO: prevent this busy waiting
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -185,9 +189,9 @@ public class MP3Player extends com.niton.media.audio.nio.basic.Player{
 	}
 	
 	/**
-	 * Do not call this often!! it is a really unperformed.<br>
-	 * It will create an Temp file with the whole Stream goes to it.<br>
-	 * This operation can take a long time for big streams!!!!<br>
+	 * Do not call this often!! it is a really unoptimized/resource intensive.<br>
+	 * As it will create an Temp file with the whole Stream goes to it.<br>
+	 * This operation can take a long time for big streams!<br>
 	 * Except the stream comes from an File. In this case the file will not read completely or duplicated
 	 * @see com.niton.media.audio.nio.basic.Player#getTotalLenght()
 	 */

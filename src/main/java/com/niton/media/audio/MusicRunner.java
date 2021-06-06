@@ -1,16 +1,12 @@
 package com.niton.media.audio;
 
-import java.io.Serializable;
-
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
+import java.io.Serializable;
+
 public class MusicRunner extends Thread implements Serializable  {
 
-	/**
-	 * <b>Type:</b> long<br> 
-	 * <b>Description:</b><br>
-	 */
 	private static final long serialVersionUID = 1L;
 	private Player player;
 	private com.niton.media.State status;
