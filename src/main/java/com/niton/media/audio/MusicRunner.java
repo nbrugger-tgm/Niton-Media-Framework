@@ -29,18 +29,14 @@ public class MusicRunner extends Thread implements Serializable  {
 	}
 	
 	private void iniPlayer(final int lastPosi, final Player player) {
-		playThread = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					player.play(lastPosi);
-					stopCourentMusic();
-					lastPos = 1000;
-				} catch (JavaLayerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		playThread = new Thread(() -> {
+			try {
+				player.play(lastPosi);
+				stopCurrentMusic();
+				lastPos = 1000;
+			} catch (JavaLayerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		});
 	}
@@ -59,24 +55,23 @@ public class MusicRunner extends Thread implements Serializable  {
 					lastCMD = 0;
 					break;
 				case STOP:
-					stopCourentMusic();
+					stopCurrentMusic();
 					lastCMD = 0;
 					break;
 				case CONTINOUE:
-					continoueMusic();
+					continueMusic();
 					lastCMD = 0;
 					break;
 				default:
-					continue;
 			}
 		}
 	}
 	
-	private void continoueMusic() {
+	private void continueMusic() {
 		playThread.start();
 	}
 
-	private void stopCourentMusic() 
+	private void stopCurrentMusic()
 	{
 		player.close();
 		player = iniedPlayer;
@@ -85,7 +80,7 @@ public class MusicRunner extends Thread implements Serializable  {
 
 	private void pauseMusic() {
 		lastPos = player.getPosition();
-		stopCourentMusic();
+		stopCurrentMusic();
 	}
 
 	private void playMusic() {

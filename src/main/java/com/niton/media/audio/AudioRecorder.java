@@ -103,7 +103,7 @@ public class AudioRecorder {
 	 * @author Niton
 	 * @version 2018-04-08
 	 */
-	public void stopReccord() {
+	public void stopRecord() {
 		line.stop();
 		line.close();
 	}
