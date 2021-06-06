@@ -1,14 +1,7 @@
 package com.niton.media.audio.nio.basic;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -16,9 +9,9 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
-
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 /**
  * Represent a Audio Player for MP3<br>
  * 
@@ -217,16 +210,10 @@ public class MP3Player extends com.niton.media.audio.nio.basic.Player{
 			AudioFile f = AudioFileIO.read(fl);
 			fl.delete();
 			return f.getAudioHeader().getTrackLength();
-		} catch (CannotReadException e) {
+		} catch (CannotReadException | IOException | TagException |
+				ReadOnlyFileException | InvalidAudioFrameException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TagException e) {
-			e.printStackTrace();
-		} catch (ReadOnlyFileException e) {
-			e.printStackTrace();
-		} catch (InvalidAudioFrameException e) {
-			e.printStackTrace();
+			//Todo: throw instead
 		}
 		return -1;
 	}

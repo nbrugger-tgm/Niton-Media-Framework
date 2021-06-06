@@ -1,16 +1,8 @@
 package com.niton.media.audio;
 
+import javax.sound.sampled.*;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioFormat.Encoding;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
 
 /**
  * This is the AudioRecorder Class

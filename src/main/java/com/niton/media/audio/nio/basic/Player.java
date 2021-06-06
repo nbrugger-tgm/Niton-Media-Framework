@@ -1,7 +1,6 @@
 package com.niton.media.audio.nio.basic;
 
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 /**
  * This is the Player class.<br>
