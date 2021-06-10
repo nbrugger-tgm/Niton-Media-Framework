@@ -13,19 +13,21 @@ java {
     withSourcesJar()
 }
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url("https://niton.jfrog.io/artifactory/java-libs/")
     }
 }
 dependencies {
-    compile 'org:jaudiotagger:2.0.3'
-    compile 'javazoom:jlayer:1.0.1'
+    implementation 'org:jaudiotagger:2.0.3'
+    implementation 'javazoom:jlayer:1.0.1'
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.2"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.2"
+    compileOnly "org.junit.jupiter:junit-jupiter-api:5.8.0-M1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.0-M1"
+    implementation "org.junit.jupiter:junit-jupiter-params:5.7.0"
+
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
@@ -74,7 +76,4 @@ tasks.withType(JavaCompile) {
 }
 test {
     useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
 }

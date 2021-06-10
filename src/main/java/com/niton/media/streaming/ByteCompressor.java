@@ -1,13 +1,18 @@
 package com.niton.media.streaming;
 
+import com.niton.media.annotations.InDevelopment;
+import com.niton.media.annotations.Untested;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
- * This is the ByteCompressor Class
+ * A selfmade compression algorithm
  * @author Nils
  * @version 2017-12-26
  */
+@Untested
+@InDevelopment
 class ByteCompressor {
 	public static byte[] simpleCompress(byte[] bytes) {
 		int times = 1;
