@@ -1,10 +1,15 @@
 package com.niton.media.streaming;
 
+import com.niton.media.annotations.InDevelopment;
+import com.niton.media.annotations.Untested;
+
 /**
  * This is the BitParser Class
  * @author Nils
  * @version 2017-12-26
  */
+@Untested
+@InDevelopment
 public class BitParser {
 	public static boolean[] getBinary(long l) {
 		boolean[] bits = new boolean[64];

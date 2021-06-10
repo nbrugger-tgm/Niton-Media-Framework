@@ -1,5 +1,8 @@
 package com.niton.media.streaming;
 
+import com.niton.media.annotations.InDevelopment;
+import com.niton.media.annotations.Untested;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,6 +13,8 @@ import java.io.InputStream;
  * @author Nils
  * @version 2017-12-26
  */
+@InDevelopment
+@Untested
 public class ArrayParser {
 
 	// OBJECT
