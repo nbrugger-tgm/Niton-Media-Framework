@@ -1,46 +1,33 @@
 package com.niton.media.streaming;
 
+import com.niton.media.annotations.UseCaseTested;
+
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class CounterOutputStream extends OutputStream {
-	private OutputStream out;
+@UseCaseTested
+public class CounterOutputStream extends FilterOutputStream {
 	private long mass;
 
 	public CounterOutputStream(OutputStream out) {
-		super();
-		this.out = out;
+		super(out);
 	}
 
 	@Override
 	public void write(int b) throws IOException {
 		mass++;
-		out.write(b);
+		super.write(b);
 	}
+
+	@Override
+	public void write(byte[] b, int off, int len) throws IOException {
+		super.write(b, off, len);
+		mass += len;
+	}
+
 	public long getSendBytes() {
 		return mass;
 	}
-	
-	/**
-	 * @see java.io.OutputStream#close()
-	 */
-	@Override
-	public void close() throws IOException {
-		out.close();
-		super.close();
-	}
-	/**
-	 * @see java.io.OutputStream#flush()
-	 */
-	@Override
-	public void flush() throws IOException {
-		out.flush();
-		super.flush();
-	}
-	/**
-	 * @return the out
-	 */
-	public OutputStream getTarget() {
-		return out;
-	}
+
 }
