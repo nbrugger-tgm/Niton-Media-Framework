@@ -1,16 +1,14 @@
 package com.niton.media.streaming;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import com.niton.media.annotations.InDevelopment;
+import com.niton.media.annotations.Untested;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
-import com.niton.media.crypt.Cluster;
-
+@Untested
+@InDevelopment
 public class ByteParser {
 	/*
 	 * BASIC TYPES

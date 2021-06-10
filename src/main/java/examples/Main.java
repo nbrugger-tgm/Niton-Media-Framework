@@ -185,23 +185,15 @@ public class Main {
 		NFile sound = new NFile("E:\\audio.wav");
 		sound.save();
 		AudioRecorder rec = new AudioFileRecorder(AudioQuality.VERY_LOW, sound);
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					rec.record();
-				} catch (LineUnavailableException e) {
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		new Thread(() -> {
+			try {
+				rec.record();
+			} catch (LineUnavailableException | IllegalStateException | IOException e) {
+				e.printStackTrace();
 			}
 		}).start();
 		Thread.sleep(10000);
-		rec.stopReccord();
+		rec.stopRecord();
 	}
 
 	public static void testNetwork() {

@@ -1,7 +1,6 @@
 package com.niton.media.audio.nio.basic;
 
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 /**
  * This is the Player class.<br>
@@ -70,11 +69,11 @@ public abstract class Player extends Thread{
 	
 	/**
 	 * Description : Changes the source of the music.<br>
-	 * <b>ONLY USE IF THE PLAYER WASNT USED BEVORE</b><br>
+	 * <b>Changing the source after the player was used is forbidden and will most likely throw an exception</b><br>
 	 * We recommend to create a new Player instead 
 	 * @author Niton
 	 * @version 2018-04-05
-	 * @param source
+	 * @param source the source stream to use
 	 */
 	public abstract void setStream(InputStream source);
 	

@@ -1,14 +1,9 @@
 package com.niton.media.audio;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.LineUnavailableException;
-
 import com.niton.media.filesystem.NFile;
+
+import javax.sound.sampled.LineUnavailableException;
+import java.io.FileNotFoundException;
 
 /**
  * This is the AudioFileRecorder Class
@@ -31,19 +26,6 @@ public class AudioFileRecorder extends AudioRecorder {
 
 	public AudioFileRecorder(NFile target) throws LineUnavailableException, FileNotFoundException {
 		this(AudioQuality.MEDIUM,target);
-	}
-	
-	 /**
-	 * @see com.niton.media.audio.AudioRecorder#record()
-	 */
-	@Override
-	public void record() throws LineUnavailableException, IllegalStateException, IOException {
-		synchronized (getLine()) {
-			getLine().open(getFormat());
-			getLine().start();
-			AudioInputStream ain = new AudioInputStream(getLine());
-			AudioSystem.write(ain, getType(), target.getFile());
-		}
 	}
 }
 
