@@ -5,9 +5,19 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
+/**
+ * Simple cluster is a little selfmade algorithm for en/decryption.
+ * While en/decryption does indeed works the level of security is questionable.
+ * More testing will be done but atm it should be treated as <b>obscurity as security</b>.
+ * So if the level off security is important for your application, <b>Do no rely on this algorithm alone</>
+ */
 public class SimpleCluster {
+	/**
+	 * encrypt the data with the key
+	 * @param key the key needs to be at least one byte
+	 * @param data the data to encrypt (size > 0)
+	 * @return
+	 */
 	public static byte[] encrypt(byte[] key, byte[] data) {
 		int blockSideSize = (key[0]);
 		if(blockSideSize < 0)
@@ -79,9 +89,7 @@ public class SimpleCluster {
 
 	public static byte[] chipher(byte[] block, byte key) {
 		byte[] orig = new byte[block.length];
-		for (int i = 0; i < orig.length; i++) {
-			orig[i] = block[i];
-		}
+		System.arraycopy(block, 0, orig, 0, orig.length);
 		for (int i = 0; i < orig.length; i++) {
 			block[i] = (byte) (orig[i] + orig[(i + 1) % orig.length]);
 		}
@@ -89,6 +97,7 @@ public class SimpleCluster {
 		try {
 			bos.write(block);
 		} catch (IOException e) {
+			//i would not know a way this could appear
 		}
 		bos.write(key + orig[0]);
 		return bos.toByteArray();
