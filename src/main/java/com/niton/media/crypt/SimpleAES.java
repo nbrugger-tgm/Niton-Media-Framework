@@ -45,7 +45,7 @@ public class SimpleAES {
 		if(padding == 0)
             padding = pad;
 		byte[] padded = new byte[dataToEncrypt.length + padding];
-		Random r = new Random();
+		Random r = new SecureRandom();
 		for (int i = 0; i < padded.length; i++) {
 			padded[i] = (byte) (dataToEncrypt.length > i ? dataToEncrypt[i] : r.nextInt());
 		}
@@ -126,7 +126,7 @@ public class SimpleAES {
 	}
 
 	public static byte[] generateRandom(int size) {
-		Random r = new Random();
+		Random r = new SecureRandom();
 		byte[] b = new byte[size];
 		for (int i = 0; i < b.length; i++) {
 			b[i] = (byte) r.nextInt(255);
