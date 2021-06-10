@@ -1,33 +1,23 @@
 package com.niton.media.visual;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-
 import com.niton.media.IOUntility;
 import com.niton.media.State;
 import com.niton.media.filesystem.NFile;
+
+import java.io.*;
+import java.nio.file.Path;
 
 /**
  * 
  * @author Nils
  *	courenly not working
  */
-public class Video{
+public abstract class Video{
 	private InputStream stream;
-	private VideoMode mode = VideoMode.STREAM;
-	private long frame = 0;
-	private float seccondsPlayed = 0.0f;
-	private State state = State.NOT_RUNNING;
-	private boolean useBuffer = true;
-	private boolean usePreload = false;
-	private long preloadSize = 1024;
-	private int bufferSize = 512;
-	private byte[] buffer = new byte[bufferSize];
+	private VideoMode   mode         = VideoMode.STREAM;
+	private long        frame        = 0;
+	private float       secondPlayed = 0.0f;
+	private State       state        = State.NOT_RUNNING;
 	
 	/**
 	 * Creates an Instance of Video.java
@@ -61,7 +51,8 @@ public class Video{
 	/**
 	 * Creates an Instance of Video.java
 	 * @author Nils
-	 * @version 2017-08-16
+	 * @param inJar if true the path will be interpreted relative to the executed JAR file location
+	 * @param path the path to the video file to load
 	 */
 	public Video(String path,boolean inJar) {
 		if(inJar)
@@ -99,6 +90,7 @@ public class Video{
 		return stream;
 	}
 	/**
+	 * Resets the player and changes the source/stream
 	 * @param stream the stream to set
 	 */
 	public synchronized void setStream(InputStream stream) {
@@ -133,14 +125,14 @@ public class Video{
 	/**
 	 * @return the seccondsPlayed
 	 */
-	public float getSeccondsPlayed() {
-		return seccondsPlayed;
+	public float getSecondsPlayed() {
+		return secondPlayed;
 	}
 	/**
-	 * @param seccondsPlayed the seccondsPlayed to set
+	 * @param secondsPlayed the secondsPlayed to set
 	 */
-	public synchronized void setSeccondsPlayed(float seccondsPlayed) {
-		this.seccondsPlayed = seccondsPlayed;
+	public synchronized void setSecondsPlayed(float secondsPlayed) {
+		this.secondPlayed = secondsPlayed;
 	}
 	/**
 	 * @return the state
@@ -154,73 +146,10 @@ public class Video{
 	public synchronized void setState(State state) {
 		this.state = state;
 	}
-	/**
-	 * @return the useBuffer
-	 */
-	public boolean useBuffer() {
-		return useBuffer;
-	}
-	/**
-	 * @param useBuffer the useBuffer to set
-	 */
-	public synchronized void setUseBuffer(boolean useBuffer) {
-		if(useBuffer) {
-			buffer = new byte[getBufferSize()];
-			try {
-				stream.read(buffer);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		this.useBuffer = useBuffer;
-	}
-	/**
-	 * @return the usePreload
-	 */
-	public synchronized boolean isUsePreload() {
-		return usePreload;
-	}
-	/**
-	 * @param usePreload the usePreload to set
-	 */
-	public synchronized void setUsePreload(boolean usePreload) {
-		this.usePreload = usePreload;
-	}
-	/**
-	 * @return the preloadSize
-	 */
-	public long getPreloadSize() {
-		return preloadSize;
-	}
-	/**
-	 * @param preloadSize the preloadSize to set
-	 */
-	public synchronized void setPreloadSize(long preloadSize) {
-		this.preloadSize = preloadSize;
-	}
-	/**
-	 * @return the bufferSize
-	 */
-	public int getBufferSize() {
-		return bufferSize;
-	}
-	/**
-	 * @param bufferSize the bufferSize to set
-	 */
-	public synchronized void setBufferSize(int bufferSize) {
-		this.bufferSize = bufferSize;
-	}
-	/**
-	 * @return the buffer
-	 */
-	public byte[] getBuffer() {
-		return buffer;
-	}
 	public synchronized void reset() {
 		setState(State.NOT_RUNNING);
 		setFrame(0);
-		setBufferSize(getBufferSize());
-		setSeccondsPlayed(0);
+		setSecondsPlayed(0);
 	}
 	
 }
