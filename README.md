@@ -5,7 +5,7 @@
 ## Description
 Nitons Media API is an big and high level Java API.
 
-It provides it provides many Classes utilitys to do I/O operations.
+It provides it provides many classes and utilitys to do I/O operations.
 ~~The API also includes many 3rd Party APIs like JCodec, JSoup and the Java Zoom MP3 Parser.~~
 ## Overview
  1. Installation
